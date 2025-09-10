@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { AppState, RecordData, AppSettings } from './types';
+import { fetchAllRecords } from '../services/recordService';
 
 // 初始状态
 const initialState: AppState = {
@@ -91,29 +92,39 @@ interface DataProviderProps {
 export function DataProvider({ children }: DataProviderProps) {
   const [state, dispatch] = useReducer(dataReducer, initialState);
   
-  // 在组件挂载时从本地存储加载数据
+  // 在组件挂载时从后端API加载数据
   React.useEffect(() => {
-    try {
-      // 加载记录
-      const savedRecords = localStorage.getItem('records');
-      if (savedRecords) {
-        dispatch({ type: 'SET_RECORDS', payload: JSON.parse(savedRecords) });
+    const loadRecords = async () => {
+      try {
+        dispatch({ type: 'SET_LOADING', payload: true });
+        const records = await fetchAllRecords();
+        dispatch({ type: 'SET_RECORDS', payload: records });
+        
+        // 仍然保留从本地存储加载设置和当前记录ID的功能
+        const savedSettings = localStorage.getItem('settings');
+        if (savedSettings) {
+          dispatch({ type: 'UPDATE_SETTINGS', payload: JSON.parse(savedSettings) });
+        }
+        
+        const currentId = localStorage.getItem('currentRecordId');
+        if (currentId) {
+          dispatch({ type: 'SET_CURRENT_RECORD', payload: currentId });
+        }
+      } catch (error) {
+        console.error('Failed to load records from API:', error);
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to load records' });
+        
+        // 如果API失败，回退到本地存储
+        const savedRecords = localStorage.getItem('records');
+        if (savedRecords) {
+          dispatch({ type: 'SET_RECORDS', payload: JSON.parse(savedRecords) });
+        }
+      } finally {
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
-      
-      // 加载设置
-      const savedSettings = localStorage.getItem('settings');
-      if (savedSettings) {
-        dispatch({ type: 'UPDATE_SETTINGS', payload: JSON.parse(savedSettings) });
-      }
-      
-      // 加载当前选中的记录ID
-      const currentId = localStorage.getItem('currentRecordId');
-      if (currentId) {
-        dispatch({ type: 'SET_CURRENT_RECORD', payload: currentId });
-      }
-    } catch (error) {
-      console.error('Failed to load data from localStorage:', error);
-    }
+    };
+
+    loadRecords();
   }, []);
   
   // 当状态变化时保存到本地存储
