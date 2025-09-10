@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRecordEditor } from "../containers/RecordEditorContext";
 
 export function EditorContent() {
-  const [mode, setMode] = useState<"weekly" | "research">("weekly");
-
+  const { record } = useRecordEditor();
+  const mode = record.type;
+  // const date = record.date; // 如需用date可解构
   return (
     <div className="flex-1 overflow-y-auto p-4 bg-gray-100">
       {/* 编辑展示区 */}

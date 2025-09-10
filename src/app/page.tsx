@@ -10,7 +10,7 @@ export default function RecordInterface() {
 
       {/* 右侧主区域 */}
       <main className="flex-1 flex flex-col">
-        <RecordEditor />
+        <RecordEditor recordId="mock-id-1" />
       </main>
     </div>
   );
