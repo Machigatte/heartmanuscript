@@ -1,103 +1,145 @@
-import Image from "next/image";
+"use client";
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Settings } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export default function RecordInterface() {
+  const [mode, setMode] = useState<"weekly" | "research">("weekly");
+  const [date, setDate] = useState<Date>(new Date());
+  const [title, setTitle] = useState("记录标题");
+  const [time, setTime] = useState<string>("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+  // 每秒更新时间（显示日期 + 时分秒）
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(
+        new Date().toLocaleString("zh-CN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        })
+      );
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="flex h-screen bg-gray-50">
+      {/* 左侧边栏 */}
+      <aside className="w-64 border-r bg-white p-4">
+        <h2 className="text-lg font-semibold mb-4">历史记录</h2>
+        <ul className="space-y-2">
+          <li className="text-sm text-gray-600 cursor-pointer hover:text-black">2025-09-01 周报</li>
+          <li className="text-sm text-gray-600 cursor-pointer hover:text-black">2025-09-05 科研日记</li>
+        </ul>
+      </aside>
+
+      {/* 右侧主内容 */}
+      <main className="flex-1 flex flex-col">
+        {/* 顶部栏 */}
+        <div className="flex items-center justify-between px-6 py-3 border-b bg-white">
+          {/* 左侧：标题 */}
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="text-xl font-bold border-none outline-none bg-transparent"
+          />
+
+          {/* 中间：实时时间显示（带悬浮提示和点击选择） */}
+          <TooltipProvider>
+            <Tooltip>
+              <Popover>
+                <PopoverTrigger>
+                  
+                <TooltipTrigger>
+                  <div className="text-gray-600 font-mono text-sm cursor-pointer">
+                    {time}
+                  </div>
+                </TooltipTrigger>
+                    
+                </PopoverTrigger>
+                <PopoverContent className="p-2">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(d) => d && setDate(d)}
+                  />
+                </PopoverContent>
+              </Popover>
+              <TooltipContent>
+                <p>{date.toLocaleString("zh-CN")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {/* 右侧：模式切换 */}
+          <div className="flex gap-3 ml-6">
+            <Button
+              variant={mode === "weekly" ? "default" : "outline"}
+              onClick={() => setMode("weekly")}
+            >
+              周报日报
+            </Button>
+            <Button
+              variant={mode === "research" ? "default" : "outline"}
+              onClick={() => setMode("research")}
+            >
+              科研日记
+            </Button>
+          </div>
+        </div>
+
+        {/* 中间内容 */}
+        <Card className="flex-1 m-6">
+          <CardContent className="p-4">
+            {mode === "weekly" && (
+              <div className="space-y-4">
+                <h3 className="font-semibold">工作安排</h3>
+                <textarea className="w-full border rounded p-2" rows={3}></textarea>
+                <h3 className="font-semibold">资料</h3>
+                <textarea className="w-full border rounded p-2" rows={3}></textarea>
+                <h3 className="font-semibold">结果</h3>
+                <textarea className="w-full border rounded p-2" rows={3}></textarea>
+              </div>
+            )}
+            {mode === "research" && (
+              <div className="space-y-4">
+                <h3 className="font-semibold">实验安排</h3>
+                <textarea className="w-full border rounded p-2" rows={3}></textarea>
+                <h3 className="font-semibold">代码</h3>
+                <textarea className="w-full border rounded p-2" rows={3}></textarea>
+                <h3 className="font-semibold">结果</h3>
+                <textarea className="w-full border rounded p-2" rows={3}></textarea>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* 底部功能按钮 */}
+        <div className="flex items-center justify-between px-6 py-3 border-t bg-white">
+          {/* 左侧设置按钮 */}
+          <Button variant="ghost">
+            <Settings className="w-5 h-5" />
+          </Button>
+
+          {/* 右侧三个功能按钮 */}
+          <div className="flex gap-3">
+            <Button variant="outline">更新</Button>
+            <Button variant="outline">分析</Button>
+            <Button variant="default">归档</Button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 }
