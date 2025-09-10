@@ -1,3 +1,5 @@
+"use client";
+
 import { EditorContent } from "@/components/EditorContent";
 import { EditorFooter } from "@/components/EditorFooter";
 import { EditorHeader } from "@/components/EditorHeader";
