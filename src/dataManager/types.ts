@@ -6,6 +6,7 @@ export type RecordType = "周报" | "科研日记" | "其他";
 // 记录数据结构
 export interface RecordData {
   id: string;           // 唯一ID
+  title: string;        // 标题
   timestamp: string;    // 时间
   type: RecordType;     // 信息属性（周报/科研日记）
   head: string;         // 头部文本

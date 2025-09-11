@@ -29,6 +29,7 @@ export async function fetchAllRecords(): Promise<RecordData[]> {
 
     return data.map((record: any) => ({
       id: record.id || '',
+      title: record.title || '未命名记录',
       timestamp: record.createdAt ? new Date(record.createdAt).toISOString() : new Date().toISOString(),
       type: record.type || '其他',
       head: record.head || '',
@@ -43,4 +44,24 @@ export async function fetchAllRecords(): Promise<RecordData[]> {
     // 返回空数组作为回退，而不是抛出错误
     return [];
   }
+}
+
+export async function saveRecord(record: RecordData): Promise<RecordData> {
+  const hasId = Boolean(record.id);
+  const url = hasId
+    ? `${API_BASE_URL}/records/${encodeURIComponent(record.id)}`
+    : `${API_BASE_URL}/records`;
+  const method = hasId ? 'PUT' : 'POST';
+  const response = await fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(record)
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
 }

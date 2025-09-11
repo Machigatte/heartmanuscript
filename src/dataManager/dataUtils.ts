@@ -1,12 +1,12 @@
 import { RecordData, RecordType } from './types';
 
 // 生成唯一ID
-export function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2);
-}
+// export function generateId(): string {
+//   return Date.now().toString(36) + Math.random().toString(36).substring(2);
+// }
 
 // 创建新记录
-export function createNewRecord(type: RecordType = "其他"): RecordData {
+export function defaultRecord(type: RecordType = "其他"): RecordData {
   const now = new Date().toISOString();
   const formattedDate = new Date().toLocaleDateString('zh-CN', {
     year: 'numeric',
@@ -15,7 +15,8 @@ export function createNewRecord(type: RecordType = "其他"): RecordData {
   });
   
   return {
-    id: generateId(),
+    id: '',
+    title: '未命名记录',
     timestamp: formattedDate,
     type,
     head: '',

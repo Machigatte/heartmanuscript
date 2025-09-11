@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { RecordData } from "@/dataManager";
 
 interface ItemWrapperProps {
   item: RecordData;

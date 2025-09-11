@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { ItemWrapper } from "./itemWrapper";
 import { SettingWrapper } from "./settingWrapper";
-import { useData, createNewRecord, sortRecordsByDate } from "@/dataManager";
+import { useData, defaultRecord, sortRecordsByDate } from "@/dataManager";
 
 
 export function Sidebar() {
@@ -26,8 +26,9 @@ export function Sidebar() {
   // 处理添加新记录的点击事件
   const handleAddNew = () => {
     // 创建新记录并添加到记录列表
-    const newRecord = createNewRecord("其他");
-    dispatch({ type: 'ADD_RECORD', payload: newRecord });
+    // const newRecord = createNewRecord("其他");
+    // dispatch({ type: 'ADD_RECORD', payload: newRecord });
+    dispatch({ type: 'CREATE_DRAFT' });
   };
   
   // 处理保存设置

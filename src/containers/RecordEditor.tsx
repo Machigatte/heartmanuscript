@@ -1,21 +1,30 @@
-"use client";
-
 import React, { useEffect } from "react";
 import { RecordEditorProvider, useRecordEditor } from "./RecordEditorContext";
-import { fetchRecordById } from "../services/recordService";
+import { defaultRecord, useData } from "@/dataManager";
 import { EditorContent } from "@/components/EditorContent";
 import { EditorFooter } from "@/components/EditorFooter";
 import { EditorHeader } from "@/components/EditorHeader";
 
 
-// 内部组件用于加载record数据
-function RecordLoader({ recordId }: { recordId?: string }) {
+function RecordLoader() {
   const { setRecord } = useRecordEditor();
+  const { state } = useData();
+  const { currentRecordId, records } = state;
+
   useEffect(() => {
-    if (recordId) {
-      fetchRecordById(recordId).then(data => setRecord(r => ({ ...r, ...data })));
+    console.log("Current Record ID:", currentRecordId);
+    if (currentRecordId) {
+      // 记录存在
+      const current = records.find(r => r.id === currentRecordId);
+      if (current) {
+        setRecord(r => ({ ...r, ...current }));
+      }
+    } else {
+      // 创建新草稿
+      setRecord(defaultRecord("周报"));
     }
-  }, [recordId, setRecord]);
+  }, [currentRecordId, records, setRecord]);
+
   return <>
     <EditorHeader />
     <EditorContent />
@@ -23,11 +32,11 @@ function RecordLoader({ recordId }: { recordId?: string }) {
   </>;
 }
 
-// 支持传入recordId
-export function RecordEditor({ recordId }: { recordId?: string }) {
+// 展示当前选中的record
+export function RecordEditor() {
   return (
     <RecordEditorProvider>
-      <RecordLoader recordId={recordId} />
+      <RecordLoader />
     </RecordEditorProvider>
   );
 }

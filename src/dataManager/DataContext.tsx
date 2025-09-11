@@ -20,6 +20,7 @@ const initialState: AppState = {
 // 定义操作类型
 type ActionType = 
   | { type: 'SET_RECORDS'; payload: RecordData[] }
+  | { type: 'CREATE_DRAFT' }
   | { type: 'ADD_RECORD'; payload: RecordData }
   | { type: 'UPDATE_RECORD'; payload: RecordData }
   | { type: 'DELETE_RECORD'; payload: string }
@@ -34,6 +35,9 @@ function dataReducer(state: AppState, action: ActionType): AppState {
     case 'SET_RECORDS':
       return { ...state, records: action.payload };
     
+    case 'CREATE_DRAFT':
+      return { ...state, currentRecordId: null };
+
     case 'ADD_RECORD':
       return { 
         ...state, 

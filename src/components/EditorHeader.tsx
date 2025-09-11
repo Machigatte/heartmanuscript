@@ -3,9 +3,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover
 import { Calendar } from "./ui/calendar";
 import { Button } from "./ui/button";
 import { useRecordEditor } from "../containers/RecordEditorContext";
+import { useEffect, useState } from "react";
 
 export function EditorHeader() {
   const { record, setRecord } = useRecordEditor();
+  const [ date, setDate ] = useState<Date>(new Date(record.updatedAt));
+
+  useEffect(() => {
+    setDate(new Date(record.updatedAt));
+  }, [record.updatedAt]);
 
   return (
     <header className="flex items-center justify-between px-6 py-3 border-b bg-white">
@@ -23,20 +29,20 @@ export function EditorHeader() {
             <PopoverTrigger>
               <TooltipTrigger>
                 <div className="text-gray-600 font-mono text-sm cursor-pointer">
-                  {record.time}
+                  {record.updatedAt}
                 </div>
               </TooltipTrigger>
             </PopoverTrigger>
             <PopoverContent className="p-2">
               <Calendar
                 mode="single"
-                selected={record.date}
+                selected={date}
                 onSelect={(d) => d && setRecord(r => ({ ...r, date: d }))}
               />
             </PopoverContent>
           </Popover>
           <TooltipContent>
-            <p>{record.date.toLocaleString("zh-CN")}</p>
+            <p>{date.toLocaleString("zh-CN")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -44,14 +50,14 @@ export function EditorHeader() {
       {/* 右侧：模式切换 */}
       <div className="flex gap-3 ml-6">
         <Button
-          variant={record.type === "weekly" ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, type: "weekly" }))}
+          variant={record.type === "周报" ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, type: "周报" }))}
         >
           周报日报
         </Button>
         <Button
-          variant={record.type === "research" ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, type: "research" }))}
+          variant={record.type === "科研日记" ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, type: "科研日记" }))}
         >
           科研日记
         </Button>
