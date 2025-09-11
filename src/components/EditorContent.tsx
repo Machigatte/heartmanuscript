@@ -1,7 +1,7 @@
 import { useRecordEditor } from "../containers/RecordEditorContext";
 
 export function EditorContent() {
-  const { record } = useRecordEditor();
+  const { record, setRecord } = useRecordEditor();
   const type = record.type;
   // const date = record.date; // 如需用date可解构
   return (
@@ -11,31 +11,38 @@ export function EditorContent() {
         {type === "周报" && (
           <div className="space-y-4">
             <h3 className="font-semibold">工作安排</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <textarea className="w-full border rounded p-2" rows={3} value={record.head} onChange={
+              (e) => setRecord(r => ({ ...r, head: e.target.value }))
+            }></textarea>
             <h3 className="font-semibold">资料</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <textarea className="w-full border rounded p-2" rows={3} value={record.body} onChange={
+              (e) => setRecord(r => ({ ...r, body: e.target.value }))
+            }></textarea>
             <h3 className="font-semibold">结果</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <textarea className="w-full border rounded p-2" rows={3} value={record.tail} onChange={
+              (e) => setRecord(r => ({ ...r, tail: e.target.value }))
+            }></textarea>
           </div>
         )}
         {type === "科研日记" && (
           <div className="space-y-4">
             <h3 className="font-semibold">实验安排</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <textarea className="w-full border rounded p-2" rows={3} value={record.head} onChange={
+              (e) => setRecord(r => ({ ...r, head: e.target.value }))
+            }></textarea>
             <h3 className="font-semibold">代码</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <textarea className="w-full border rounded p-2" rows={3} value={record.body} onChange={
+              (e) => setRecord(r => ({ ...r, body: e.target.value }))
+            }></textarea>
             <h3 className="font-semibold">结果</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <textarea className="w-full border rounded p-2" rows={3} value={record.tail} onChange={
+              (e) => setRecord(r => ({ ...r, tail: e.target.value }))
+            }></textarea>
           </div>
         )}
         {type === "其他" && (
           <div className="space-y-4">
-            <h3 className="font-semibold">1</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
-            <h3 className="font-semibold">2</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
-            <h3 className="font-semibold">3</h3>
-            <textarea className="w-full border rounded p-2" rows={3}></textarea>
+            <p>其他类型的内容</p>
           </div>
         )}
       </div>
