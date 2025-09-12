@@ -3,50 +3,22 @@ import { RecordData } from '../dataManager/types';
 const API_BASE_URL = 'http://jp3.neptunia.net.eu.org:8080';
 //const API_BASE_URL = 'http://localhost:8080';
 
+// 获取所有记录
 export async function fetchAllRecords(): Promise<RecordData[]> {
-  try {
-    // 添加更详细的错误处理和超时机制
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
-
     const response = await fetch(`${API_BASE_URL}/notes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      signal: controller.signal
-    }).finally(() => clearTimeout(timeoutId));
+    })
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
-    const data = await response.json();
-    
-    if (!Array.isArray(data)) {
-      throw new Error('Invalid response format: expected array');
-    }
 
-    return data.map((record: any) => ({
-      id: record.id || '',
-      title: record.title || '未命名记录',
-      note_type: record.note_type || 3,
-      head: record.head || '',
-      body: record.body || '',
-      tail: record.tail || '',
-      analyse: record.analyse || '',
-      archivedAt: record.archivedAt || null,
-      createdAt: record.createdAt ? new Date(record.createdAt).toISOString() : new Date().toISOString(),
-      updatedAt: record.createdAt ? new Date(record.createdAt).toISOString() : new Date().toISOString()
-    }));
-  } catch (error) {
-    console.error('Error fetching records:', error);
-    // 返回空数组作为回退，而不是抛出错误
-    return [];
-  }
+    return await response.json();
 }
-
 
 // 新建记录
 export async function createRecord(record: RecordData): Promise<RecordData> {
@@ -79,5 +51,23 @@ export async function updateRecord(record: RecordData): Promise<void> {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   // 204 No Content，无需返回内容
+  return;
+}
+
+// 删除记录
+export async function deleteRecord(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  // 204 No Content, no need to return anything
   return;
 }

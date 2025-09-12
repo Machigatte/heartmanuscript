@@ -5,6 +5,8 @@ import { Plus, Search } from "lucide-react";
 import { ItemWrapper } from "./itemWrapper";
 import { SettingWrapper } from "./settingWrapper";
 import { useData, sortRecordsByDate } from "@/dataManager";
+import { deleteRecord } from "@/services/recordService";
+import { toast } from "sonner";
 
 
 export function Sidebar() {
@@ -47,6 +49,16 @@ export function Sidebar() {
     console.log("查询记录");
     // 这里可以添加记录查询的逻辑，例如打开搜索对话框
   };
+
+  const handleDeleteRecord = (id: string) => {
+    try {
+      deleteRecord(id)
+      dispatch({ type: 'DELETE_RECORD', payload: id });
+      toast("删除成功")
+    } catch (e) {
+      toast("删除失败")
+    }
+  };
   
   // 按日期排序记录
   const sortedRecords = sortRecordsByDate(records);
@@ -75,7 +87,7 @@ export function Sidebar() {
                 isSelected={currentRecordId === item.id}
                 // 确保item.id和currentRecordId类型匹配
                 onClick={handleItemClick}
-                onDelete={(id) => dispatch({ type: 'DELETE_RECORD', payload: id })}
+                onDelete={handleDeleteRecord}
               />
             ))
           ) : (
