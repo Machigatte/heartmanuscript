@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { AppState, RecordData, AppSettings } from './types';
-import { fetchAllRecords } from '../services/recordService';
+import { deleteRecord, fetchAllRecords, softDeleteRecord } from '../services/recordService';
+import { toast } from 'sonner';
 
 // 初始状态
 const initialState: AppState = {
@@ -115,6 +116,7 @@ export function DataProvider({ children }: DataProviderProps) {
           dispatch({ type: 'SET_CURRENT_RECORD', payload: currentId });
         }
       } catch (error) {
+        toast("加载失败，请检查网络连接或稍后重试")
         console.error('Failed to load records from API:', error);
         dispatch({ type: 'SET_ERROR', payload: 'Failed to load records' });
         
