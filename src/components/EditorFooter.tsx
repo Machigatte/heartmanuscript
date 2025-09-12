@@ -2,6 +2,7 @@ import { Button } from "./ui/button";
 import { useRecordEditor } from "@/containers/RecordEditorContext";
 import { useData } from "@/dataManager";
 import { createRecord, updateRecord } from "@/services/recordService";
+import { toast } from "sonner"
 
 export function EditorFooter() {
   const { record } = useRecordEditor();
@@ -13,13 +14,15 @@ export function EditorFooter() {
         // 新建
         const saved = await createRecord(record);
         dispatch({ type: 'ADD_RECORD', payload: saved });
+        toast("新建成功")
       } else {
         // 更新
         await updateRecord(record);
         dispatch({ type: 'UPDATE_RECORD', payload: record });
+        toast("更新成功")
       }
     } catch (e) {
-      console.error('保存失败', e);
+      toast("发生错误，保存失败")
     }
   };
 
