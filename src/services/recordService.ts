@@ -1,6 +1,7 @@
 import { RecordData } from '../dataManager/types';
 
 const API_BASE_URL = 'http://jp3.neptunia.net.eu.org:8080';
+//const API_BASE_URL = 'http://localhost:8080';
 
 export async function fetchAllRecords(): Promise<RecordData[]> {
   try {
