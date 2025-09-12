@@ -11,7 +11,7 @@ export interface RecordData {
   head: string;         // 头部文本
   body: string;         // 主体文本
   tail: string;         // 尾部文本
-  analyse: string;      // 分析文本
+  summary: string;      // 分析文本
   archivedAt: string | null; // 存档时间，null表示未存档
   createdAt: string;    // 创建时间
   updatedAt: string;    // 更新时间

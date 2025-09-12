@@ -60,7 +60,7 @@ export function Sidebar() {
   };
   
   // 按日期排序记录
-  const sortedRecords = sortRecordsByDate(records);
+  // const sortedRecords = sortRecordsByDate(records);
   return (
     <aside className="w-64 border-r bg-white flex flex-col">
       <div className="flex justify-between items-center p-4">
@@ -80,8 +80,8 @@ export function Sidebar() {
       <div className="flex flex-col flex-1 overflow-y-auto justify-between p-4">
         {/* 上面列表 */}
         <ul className="space-y-2">
-          {sortedRecords.length > 0 ? (
-            sortedRecords.map((item) => (
+          {records.length > 0 ? (
+            records.map((item) => (
               <ItemWrapper
                 key={item.id}
                 item={item}

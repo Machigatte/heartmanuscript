@@ -7,11 +7,19 @@ import { useEffect, useState } from "react";
 
 export function EditorHeader() {
   const { record, setRecord } = useRecordEditor();
-  const [ date, setDate ] = useState<Date>(new Date(record.updatedAt));
+  const [date, setDate] = useState<Date>(new Date(record.updatedAt));
+  const [currentTime, setCurrentTime] = useState<string>(new Date().toLocaleString("zh-CN"));
 
   useEffect(() => {
     setDate(new Date(record.updatedAt));
   }, [record.updatedAt]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleString("zh-CN"));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <header className="flex items-center justify-between px-6 py-3 border-b bg-white">
@@ -29,20 +37,13 @@ export function EditorHeader() {
             <PopoverTrigger>
               <TooltipTrigger>
                 <div className="text-gray-600 font-mono text-sm cursor-pointer">
-                  {record.updatedAt}
+                  {currentTime}
                 </div>
               </TooltipTrigger>
             </PopoverTrigger>
-            <PopoverContent className="p-2">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(d) => d && setRecord(r => ({ ...r, date: d }))}
-              />
-            </PopoverContent>
           </Popover>
           <TooltipContent>
-            <p>{date.toLocaleString("zh-CN")}</p>
+            <p>再坚持一下吧</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

@@ -39,7 +39,7 @@ export function ItemWrapper({
       }}
     >
       <div className="flex-1 min-w-0">
-        <span className="truncate">{item.note_type || "未命名记录"}</span>
+        <span className="truncate">{item.title || "未命名记录"}</span>
       </div>
       
       {onDelete && isSelected && (
