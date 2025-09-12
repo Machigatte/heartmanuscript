@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { ItemWrapper } from "./itemWrapper";
 import { SettingWrapper } from "./settingWrapper";
-import { useData, defaultRecord, sortRecordsByDate } from "@/dataManager";
+import { useData, sortRecordsByDate } from "@/dataManager";
 
 
 export function Sidebar() {

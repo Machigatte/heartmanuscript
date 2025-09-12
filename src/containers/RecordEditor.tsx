@@ -21,7 +21,7 @@ function RecordLoader() {
       }
     } else {
       // 创建新草稿
-      setRecord(defaultRecord("周报"));
+      setRecord(defaultRecord(1));
     }
   }, [currentRecordId, records, setRecord]);
 

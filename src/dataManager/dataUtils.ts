@@ -5,8 +5,8 @@ import { RecordData, RecordType } from './types';
 //   return Date.now().toString(36) + Math.random().toString(36).substring(2);
 // }
 
-// 创建新记录
-export function defaultRecord(type: RecordType = "其他"): RecordData {
+// 创建默认记录（草稿）
+export function defaultRecord(type: RecordType = 1): RecordData {
   const now = new Date().toISOString();
   const formattedDate = new Date().toLocaleDateString('zh-CN', {
     year: 'numeric',
@@ -16,15 +16,15 @@ export function defaultRecord(type: RecordType = "其他"): RecordData {
   
   return {
     id: '',
-    title: '未命名记录',
-    timestamp: formattedDate,
-    type,
+    title: '未命名 - ' + formattedDate,
+    note_type: 1,
     head: '',
     body: '',
     tail: '',
     analyse: '',
-    createdAt: now,
-    updatedAt: now
+    archivedAt: null,
+    createdAt: '',
+    updatedAt: ''
   };
 }
 
@@ -52,7 +52,7 @@ export function sortRecordsByDate(records: RecordData[]): RecordData[] {
 // 按类型过滤记录
 export function filterRecordsByType(records: RecordData[], type: RecordType | null): RecordData[] {
   if (!type) return records;
-  return records.filter(record => record.type === type);
+  return records.filter(record => record.note_type === type);
 }
 
 // 搜索记录
@@ -64,9 +64,9 @@ export function searchRecords(records: RecordData[], searchTerm: string): Record
     record.head.toLowerCase().includes(term) ||
     record.body.toLowerCase().includes(term) ||
     record.tail.toLowerCase().includes(term) ||
-    record.analyse.toLowerCase().includes(term) ||
-    record.timestamp.toLowerCase().includes(term) ||
-    record.type.toLowerCase().includes(term)
+    record.analyse.toLowerCase().includes(term)
+    // TODO: 
+    //record.note_type.toLowerCase().includes(term)
   );
 }
 

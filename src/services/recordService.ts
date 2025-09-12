@@ -1,6 +1,6 @@
 import { RecordData } from '../dataManager/types';
 
-const API_BASE_URL = 'http://us1.neptunia.net.eu.org:8080';
+const API_BASE_URL = 'http://jp3.neptunia.net.eu.org:8080';
 
 export async function fetchAllRecords(): Promise<RecordData[]> {
   try {
@@ -30,12 +30,12 @@ export async function fetchAllRecords(): Promise<RecordData[]> {
     return data.map((record: any) => ({
       id: record.id || '',
       title: record.title || '未命名记录',
-      timestamp: record.createdAt ? new Date(record.createdAt).toISOString() : new Date().toISOString(),
-      type: record.type || '其他',
+      note_type: record.note_type || 3,
       head: record.head || '',
       body: record.body || '',
       tail: record.tail || '',
       analyse: record.analyse || '',
+      archivedAt: record.archivedAt || null,
       createdAt: record.createdAt ? new Date(record.createdAt).toISOString() : new Date().toISOString(),
       updatedAt: record.createdAt ? new Date(record.createdAt).toISOString() : new Date().toISOString()
     }));
@@ -46,14 +46,11 @@ export async function fetchAllRecords(): Promise<RecordData[]> {
   }
 }
 
-export async function saveRecord(record: RecordData): Promise<RecordData> {
-  const hasId = Boolean(record.id);
-  const url = hasId
-    ? `${API_BASE_URL}/records/${encodeURIComponent(record.id)}`
-    : `${API_BASE_URL}/records`;
-  const method = hasId ? 'PUT' : 'POST';
-  const response = await fetch(url, {
-    method,
+
+// 新建记录
+export async function createRecord(record: RecordData): Promise<RecordData> {
+  const response = await fetch(`${API_BASE_URL}/notes`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -64,4 +61,22 @@ export async function saveRecord(record: RecordData): Promise<RecordData> {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   return response.json();
+}
+
+// 更新记录
+export async function updateRecord(record: RecordData): Promise<void> {
+  if (!record.id) throw new Error('Record id is required for update');
+  const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(record)
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  // 204 No Content，无需返回内容
+  return;
 }

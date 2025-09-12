@@ -50,14 +50,14 @@ export function EditorHeader() {
       {/* 右侧：模式切换 */}
       <div className="flex gap-3 ml-6">
         <Button
-          variant={record.type === "周报" ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, type: "周报" }))}
+          variant={record.note_type === 1 ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, note_type: 1 }))}
         >
           周报日报
         </Button>
         <Button
-          variant={record.type === "科研日记" ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, type: "科研日记" }))}
+          variant={record.note_type === 2 ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, note_type: 2 }))}
         >
           科研日记
         </Button>

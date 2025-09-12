@@ -1,18 +1,18 @@
 // 定义数据类型
 
-// 记录类型
-export type RecordType = "周报" | "科研日记" | "其他";
+// 记录类型：1=周报，2=科研日记
+export type RecordType = 1 | 2;
 
 // 记录数据结构
 export interface RecordData {
   id: string;           // 唯一ID
   title: string;        // 标题
-  timestamp: string;    // 时间
-  type: RecordType;     // 信息属性（周报/科研日记）
+  note_type: RecordType;     // 信息属性（1=周报，2=科研日记）
   head: string;         // 头部文本
   body: string;         // 主体文本
   tail: string;         // 尾部文本
   analyse: string;      // 分析文本
+  archivedAt: string | null; // 存档时间，null表示未存档
   createdAt: string;    // 创建时间
   updatedAt: string;    // 更新时间
 }

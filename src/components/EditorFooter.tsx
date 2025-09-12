@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { useRecordEditor } from "@/containers/RecordEditorContext";
 import { useData } from "@/dataManager";
-import { saveRecord } from "@/services/recordService";
+import { createRecord, updateRecord } from "@/services/recordService";
 
 export function EditorFooter() {
   const { record } = useRecordEditor();
@@ -9,14 +9,14 @@ export function EditorFooter() {
 
   const handleSave = async () => {
     try {
-      if(!state.currentRecordId) {
-        // 保存草稿
-        const saved = await saveRecord(record);
+      if (!state.currentRecordId) {
+        // 新建
+        const saved = await createRecord(record);
         dispatch({ type: 'ADD_RECORD', payload: saved });
       } else {
-        // 更新已有记录
-        const saved = await saveRecord(record);
-        dispatch({ type: 'UPDATE_RECORD', payload: saved });
+        // 更新
+        await updateRecord(record);
+        dispatch({ type: 'UPDATE_RECORD', payload: record });
       }
     } catch (e) {
       console.error('保存失败', e);

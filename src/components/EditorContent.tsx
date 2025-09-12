@@ -2,13 +2,13 @@ import { useRecordEditor } from "../containers/RecordEditorContext";
 
 export function EditorContent() {
   const { record, setRecord } = useRecordEditor();
-  const type = record.type;
+  const type = record.note_type;
   // const date = record.date; // 如需用date可解构
   return (
     <div className="flex-1 overflow-y-auto p-4 bg-gray-100">
       {/* 编辑展示区 */}
       <div className="bg-white shadow rounded p-4">
-        {type === "周报" && (
+        {type === 1 && (
           <div className="space-y-4">
             <h3 className="font-semibold">工作安排</h3>
             <textarea className="w-full border rounded p-2" rows={3} value={record.head} onChange={
@@ -24,7 +24,7 @@ export function EditorContent() {
             }></textarea>
           </div>
         )}
-        {type === "科研日记" && (
+        {type === 2 && (
           <div className="space-y-4">
             <h3 className="font-semibold">实验安排</h3>
             <textarea className="w-full border rounded p-2" rows={3} value={record.head} onChange={
@@ -40,7 +40,7 @@ export function EditorContent() {
             }></textarea>
           </div>
         )}
-        {type === "其他" && (
+        {type !== 1 && type !== 2 && (
           <div className="space-y-4">
             <p>其他类型的内容</p>
           </div>
