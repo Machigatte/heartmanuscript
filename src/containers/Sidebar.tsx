@@ -1,17 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, RefreshCw } from "lucide-react";
 import { ItemWrapper } from "./itemWrapper";
 import { SettingWrapper } from "./settingWrapper";
 import { useData, sortRecordsByDate } from "@/dataManager";
 import { deleteRecord } from "@/services/recordService";
 import { toast } from "sonner";
 
-
 export function Sidebar() {
   // 使用数据管理系统
-  const { state, dispatch } = useData();
+  const { state, dispatch, loadRecords  } = useData();
   const { records, currentRecordId } = state;
   
   // 处理历史记录项点击事件
@@ -32,7 +31,7 @@ export function Sidebar() {
     // dispatch({ type: 'ADD_RECORD', payload: newRecord });
     dispatch({ type: 'CREATE_DRAFT' });
   };
-  
+
   // 处理保存设置
   const handleSaveSettings = (settings: { model: string; apiKey: string }) => {
     dispatch({ 
@@ -68,7 +67,9 @@ export function Sidebar() {
         <h2 className="text-lg font-semibold">历史记录</h2>
         <div className="flex space-x-1">
           <SettingWrapper onSaveSettings={handleSaveSettings} />
-          
+          <Button variant="ghost" size="icon" onClick={loadRecords}>
+            <RefreshCw className="w-4 h-4" />
+          </Button>
           <Button variant="ghost" size="icon" onClick={handleAddNew}>
             <Plus className="w-4 h-4" />
           </Button>
