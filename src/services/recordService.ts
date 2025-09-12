@@ -1,6 +1,6 @@
 import { RecordData } from '../dataManager/types';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://us1.neptunia.net.eu.org:8080';
 
 export async function fetchAllRecords(): Promise<RecordData[]> {
   try {
@@ -8,7 +8,7 @@ export async function fetchAllRecords(): Promise<RecordData[]> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
 
-    const response = await fetch(`${API_BASE_URL}/records`, {
+    const response = await fetch(`${API_BASE_URL}/notes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
