@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export function EditorHeader() {
   const { record, setRecord } = useRecordEditor();
   const [date, setDate] = useState<Date>(new Date(record.updatedAt));
-  const [currentTime, setCurrentTime] = useState<string>(new Date().toLocaleString("zh-CN"));
+  const [currentTime, setCurrentTime] = useState<string>();
 
   useEffect(() => {
     setDate(new Date(record.updatedAt));
