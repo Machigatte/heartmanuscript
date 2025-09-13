@@ -54,8 +54,6 @@ export function EditorFooter() {
       return;
     }
 
-    
-
     try {
       const isArchived = Boolean(record.archivedAt);
       if (isArchived) {
@@ -63,7 +61,7 @@ export function EditorFooter() {
         return;
       }
       const archived = await archiveRecord(record);
-      // dispatch({ type: 'UPDATE_RECORD', payload: archived });
+      dispatch({ type: 'UPDATE_RECORD', payload: archived });
       toast("归档成功");
     } catch (e) {
       toast("归档失败");
