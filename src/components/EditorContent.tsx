@@ -2,8 +2,8 @@ import { useRecordEditor } from "../containers/RecordEditorContext";
 
 export function EditorContent() {
   const { record, setRecord } = useRecordEditor();
-  const type = record.note_type;
-  const isArchived = !!record.archivedAt;
+  const type = record.noteType;
+  const isArchived = Boolean(record.archivedAt);
   // const date = record.date; // 如需用date可解构
   return (
     <div className="flex-1 overflow-y-auto p-4 bg-gray-100">

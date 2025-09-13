@@ -17,7 +17,7 @@ export function defaultRecord(type: RecordType = 1): RecordData {
   return {
     id: '',
     title: '未命名 - ' + formattedDate,
-    note_type: 1,
+    noteType: 1,
     head: '',
     body: '',
     tail: '',
@@ -52,7 +52,7 @@ export function sortRecordsByDate(records: RecordData[]): RecordData[] {
 // 按类型过滤记录
 export function filterRecordsByType(records: RecordData[], type: RecordType | null): RecordData[] {
   if (!type) return records;
-  return records.filter(record => record.note_type === type);
+  return records.filter(record => record.noteType === type);
 }
 
 // 搜索记录
