@@ -50,6 +50,11 @@ export function EditorFooter() {
     }
 
     try {
+      const isArchived = Boolean(record.archivedAt);
+      if (isArchived) {
+        toast("记录已归档，无需重复操作");
+        return;
+      }
       const archived = await archiveRecord(record);
       dispatch({ type: 'UPDATE_RECORD', payload: archived });
       toast("归档成功");
