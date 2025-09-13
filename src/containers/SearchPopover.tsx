@@ -58,6 +58,7 @@ export function SearchPopover({ onSearch }: SearchPopoverProps) {
                 <SelectContent>
                   <SelectItem value="1">工作周报</SelectItem>
                   <SelectItem value="2">科研日记</SelectItem>
+                  <SelectItem value="3">随想</SelectItem>
                 </SelectContent>
               </Select>
             </div>
