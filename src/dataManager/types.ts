@@ -7,7 +7,7 @@ export type RecordType = 1 | 2;
 export interface RecordData {
   id: string;           // 唯一ID
   title: string;        // 标题
-  note_type: RecordType;     // 信息属性（1=周报，2=科研日记）
+  noteType: RecordType;     // 信息属性（1=周报，2=科研日记）
   head: string;         // 头部文本
   body: string;         // 主体文本
   tail: string;         // 尾部文本
@@ -31,4 +31,5 @@ export interface AppState {
   settings: AppSettings;           // 应用设置
   isLoading: boolean;              // 加载状态
   error: string | null;            // 错误信息
+  isModified: boolean;             // 当前记录是否有未保存的修改
 }

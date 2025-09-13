@@ -15,11 +15,13 @@ const initialState: AppState = {
     theme: 'light'
   },
   isLoading: false,
-  error: null
+  error: null,
+  isModified: false
 };
 
 // 定义操作类型
 type ActionType = 
+  | { type: 'SET_MODIFIED'; payload: boolean }
   | { type: 'FETCH_RECORDS' }
   | { type: 'SET_RECORDS'; payload: RecordData[] }
   | { type: 'CREATE_DRAFT' }
@@ -34,10 +36,13 @@ type ActionType =
 // 创建reducer函数
 function dataReducer(state: AppState, action: ActionType): AppState {
   switch (action.type) {
+    case 'SET_MODIFIED':
+      return { ...state, isModified: action.payload };
+
     case 'FETCH_RECORDS':
-      
       // 这里只设置loading状态，实际数据获取在useEffect中处理
       return { ...state, isLoading: true };
+
     case 'SET_RECORDS':
       return { ...state, records: action.payload, isLoading: false };
     

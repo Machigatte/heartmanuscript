@@ -75,6 +75,9 @@ export const deleteRecord = camelSnake(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     // 204 No Content, no need to return anything
     return;
