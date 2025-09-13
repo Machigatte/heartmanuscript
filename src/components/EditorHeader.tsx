@@ -34,13 +34,20 @@ export function EditorHeader() {
       <TooltipProvider>
         <Tooltip>
           <Popover>
-            <PopoverTrigger>
-              <TooltipTrigger>
+            <TooltipTrigger>
+              <PopoverTrigger asChild>
                 <div className="text-gray-600 font-mono text-sm cursor-pointer">
                   {currentTime}
                 </div>
-              </TooltipTrigger>
-            </PopoverTrigger>
+              </PopoverTrigger>
+            </TooltipTrigger>
+            <PopoverContent>
+              <Calendar
+                mode="single"
+                className="rounded-md border shadow-sm"
+                captionLayout="dropdown"
+              />
+            </PopoverContent>
           </Popover>
           <TooltipContent>
             <p>再坚持一下吧</p>
