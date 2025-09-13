@@ -49,6 +49,8 @@ export function EditorFooter() {
       return;
     }
 
+    
+
     try {
       await archiveRecord(record);
       dispatch({ type: 'UPDATE_RECORD', payload: record });
