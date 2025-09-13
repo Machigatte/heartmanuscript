@@ -72,7 +72,7 @@ export async function deleteRecord(id: string): Promise<void> {
   return;
 }
 
-export async function archiveRecord(record: RecordData): Promise<void> {
+export async function archiveRecord(record: RecordData): Promise<RecordData> {
   if (!record.id) throw new Error('Record id is required for archive');
   const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/archive`, {
     method: 'PUT',
@@ -85,8 +85,7 @@ export async function archiveRecord(record: RecordData): Promise<void> {
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  // 204 No Content，无需返回内容
-  return;
+  return response.json();
 }
 
 export async function analyseRecord(record: RecordData): Promise<void> {

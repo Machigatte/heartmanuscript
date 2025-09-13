@@ -50,8 +50,8 @@ export function EditorFooter() {
     }
 
     try {
-      await archiveRecord(record);
-      dispatch({ type: 'UPDATE_RECORD', payload: record });
+      const archived = await archiveRecord(record);
+      dispatch({ type: 'UPDATE_RECORD', payload: archived });
       toast("归档成功");
     } catch (e) {
       toast("归档失败");
