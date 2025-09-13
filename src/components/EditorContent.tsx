@@ -2,7 +2,7 @@ import { useRecordEditor } from "../containers/RecordEditorContext";
 
 export function EditorContent() {
   const { record, setRecord } = useRecordEditor();
-  const type = record.note_type;
+  const type = record.noteType;
   const isArchived = !!record.archivedAt;
   // const date = record.date; // 如需用date可解构
   return (
