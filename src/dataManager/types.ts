@@ -1,7 +1,7 @@
 // 定义数据类型
 
 // 记录类型：1=周报，2=科研日记
-export type RecordType = 1 | 2;
+export type RecordType = 1 | 2 | 3;
 
 // 记录数据结构
 export interface RecordData {
