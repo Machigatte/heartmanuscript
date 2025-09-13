@@ -1,11 +1,11 @@
 import { RecordData } from '../dataManager/types';
-import { camelCaseResponse } from '@/lib/camel';
+import { camelSnake } from '@/lib/camel';
 
 // const API_BASE_URL = 'http://jp3.neptunia.net.eu.org:8080';
 const API_BASE_URL = 'http://localhost:8080';
 
 // 获取所有记录
-export const fetchAllRecords = camelCaseResponse(
+export const fetchAllRecords = camelSnake(
   async (): Promise<RecordData[]> => {
     const response = await fetch(`${API_BASE_URL}/notes`, {
       method: 'GET',
@@ -24,7 +24,7 @@ export const fetchAllRecords = camelCaseResponse(
 )
 
 // 新建记录
-export const createRecord = camelCaseResponse(
+export const createRecord = camelSnake(
   async (record: RecordData): Promise<RecordData> => {
     const response = await fetch(`${API_BASE_URL}/notes`, {
       method: 'POST',
@@ -42,7 +42,7 @@ export const createRecord = camelCaseResponse(
 )
 
 // 更新记录
-export const updateRecord = camelCaseResponse(
+export const updateRecord = camelSnake(
   async (record: RecordData): Promise<void> => {
     if (!record.id) throw new Error('Record id is required for update');
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}`, {
@@ -62,7 +62,7 @@ export const updateRecord = camelCaseResponse(
 )
 
 // 删除记录
-export const deleteRecord = camelCaseResponse(
+export const deleteRecord = camelSnake(
   async (id: string): Promise<void> => {
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(id)}`, {
       method: 'DELETE',
@@ -82,7 +82,7 @@ export const deleteRecord = camelCaseResponse(
 )
 
 // 归档记录
-export const archiveRecord = camelCaseResponse(
+export const archiveRecord = camelSnake(
   async (record: RecordData): Promise<RecordData> => {
     if (!record.id) throw new Error('Record id is required for archive');
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/archive`, {
@@ -101,7 +101,7 @@ export const archiveRecord = camelCaseResponse(
 )
 
 // 分析记录
-export const analyseRecord = camelCaseResponse(
+export const analyseRecord = camelSnake(
   async (record: RecordData): Promise<void> => {
     if (!record.id) throw new Error('Record id is required for analysis');
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/analysis`, {
