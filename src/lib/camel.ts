@@ -30,22 +30,26 @@ function convertDatesToStrings(obj: any): any {
 
 // 工具函数：驼峰命名
 function keysToCamel(obj: any): any {
-  if (isSpecialObject(obj)) return obj;
-
-  return Object.keys(obj).reduce((acc, key) => {
-    acc[_.camelCase(key)] = keysToCamel(obj[key]);
-    return acc;
-  }, {} as any);
+  if (Array.isArray(obj)) return obj.map(keysToCamel);
+  if (obj && typeof obj === 'object') {
+    return Object.keys(obj).reduce((acc, key) => {
+      acc[_.camelCase(key)] = keysToCamel(obj[key]);
+      return acc;
+    }, {} as any);
+  }
+  return obj;
 }
 
 // 工具函数：下划线命名
 function keysToSnake(obj: any): any {
-  if (isSpecialObject(obj)) return obj;
-
-  return Object.keys(obj).reduce((acc, key) => {
-    acc[_.snakeCase(key)] = keysToSnake(obj[key]);
-    return acc;
-  }, {} as any);
+  if (Array.isArray(obj)) return obj.map(keysToSnake);
+  if (obj && typeof obj === 'object') {
+    return Object.keys(obj).reduce((acc, key) => {
+      acc[_.snakeCase(key)] = keysToSnake(obj[key]);
+      return acc;
+    }, {} as any);
+  }
+  return obj;
 }
 
 // 双向转换装饰器
@@ -56,10 +60,12 @@ export function camelSnake<T extends (...args: any[]) => Promise<any>>(fn: T): T
     
     // 2. 然后把键名转换成 snake_case
     const newArgs = argsWithStrings.map(arg => (typeof arg === 'object' ? keysToSnake(arg) : arg));
-    console.log(newArgs)
 
     const result = await fn(...(newArgs as Parameters<T>));
-    //console.log(result);
+
+    console.log('Original result:', result);
+    console.log('Converted result:', keysToCamel(result));
+
     // 3. 把返回值转换成 camelCase
     return keysToCamel(result);
   }) as T;
