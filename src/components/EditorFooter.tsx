@@ -49,6 +49,8 @@ export function EditorFooter() {
       return;
     }
 
+    
+
     try {
       const isArchived = Boolean(record.archivedAt);
       if (isArchived) {

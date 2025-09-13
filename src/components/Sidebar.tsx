@@ -1,11 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Plus, Search, RefreshCw } from "lucide-react";
-import { ItemWrapper } from "./itemWrapper";
-import { SettingWrapper } from "./settingWrapper";
+import { Plus, RefreshCw } from "lucide-react";
+import { SearchPopover } from "@/containers/SearchPopover";
+
+import { useState } from "react";
+import { ItemWrapper } from "../containers/itemWrapper";
+import { SettingWrapper } from "../containers/settingWrapper";
 import { useData, sortRecordsByDate } from "@/dataManager";
-import { deleteRecord } from "@/services/recordService";
+import { deleteRecord, searchRecords } from "@/services/recordService";
 import { toast } from "sonner";
 
 export function Sidebar() {
@@ -17,18 +20,11 @@ export function Sidebar() {
   const handleItemClick = (id: string) => {
     // 确保总是更新选中状态，即使点击的是当前选中的item
     dispatch({ type: 'SET_CURRENT_RECORD', payload: id });
-    
-    // 如果需要切换选中状态，可以改为：
-    // dispatch({ type: 'SET_CURRENT_RECORD', 
-    //   payload: currentRecordId === id ? null : id 
-    // });
   };
   
   // 处理添加新记录的点击事件
   const handleAddNew = () => {
     // 创建新记录并添加到记录列表
-    // const newRecord = createNewRecord("其他");
-    // dispatch({ type: 'ADD_RECORD', payload: newRecord });
     dispatch({ type: 'CREATE_DRAFT' });
   };
 
@@ -43,11 +39,26 @@ export function Sidebar() {
     });
   };
   
-  // 处理记录查询
-  const handleSearchRecords = () => {
-    console.log("查询记录");
-    // 这里可以添加记录查询的逻辑，例如打开搜索对话框
+  const handleSearchRecords = async (params: {
+    from?: Date;
+    to?: Date;
+    noteType?: string;
+    keyword?: string;
+  }) => {
+    try {
+      dispatch({ type: 'FETCH_RECORDS' });
+      const records = await searchRecords(params);
+      dispatch({ type: 'SET_RECORDS', payload: records });
+      toast("查询成功");
+    } catch (error) {
+      console.error('查询失败:', error);
+      dispatch({ type: 'SET_ERROR', payload: '查询失败' });
+      toast("查询失败");
+    }
   };
+  
+  
+
 
   const handleDeleteRecord = (id: string) => {
     try {
@@ -64,9 +75,12 @@ export function Sidebar() {
   return (
     <aside className="w-64 border-r bg-white flex flex-col">
       <div className="flex justify-between items-center p-4">
-        <h2 className="text-lg font-semibold">历史记录</h2>
+        <h2 className="text-lg font-semibold">以前</h2>
         <div className="flex space-x-1">
           <SettingWrapper onSaveSettings={handleSaveSettings} />
+
+          <SearchPopover onSearch={handleSearchRecords} />
+
           <Button variant="ghost" size="icon" onClick={loadRecords}>
             <RefreshCw className="w-4 h-4" />
           </Button>
@@ -76,10 +90,13 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* 列表 + 按钮容器 */}
-      <div className="flex flex-col flex-1 overflow-y-auto justify-between p-4">
+      
+
+      {/* 列表容器 */}
+      <div className="flex flex-col flex-1 overflow-y-auto p-2">
+        
         {/* 上面列表 */}
-        <ul className="space-y-2">
+        <ul className="space-y-1">
           {records.length > 0 ? (
             records.map((item) => (
               <ItemWrapper
@@ -98,17 +115,7 @@ export function Sidebar() {
           )}
         </ul>
 
-        {/* 底部记录查询按钮 */}
-        <div className="mt-4 pt-4 border-t">
-          <Button 
-            variant="outline" 
-            className="w-full flex items-center justify-center gap-2"
-            onClick={handleSearchRecords}
-          >
-            <Search className="w-4 h-4" />
-            <span>记录查询</span>
-          </Button>
-        </div>
+        
       </div>
     </aside>
   );
