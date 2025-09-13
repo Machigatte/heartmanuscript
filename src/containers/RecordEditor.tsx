@@ -4,11 +4,11 @@ import { defaultRecord, useData } from "@/dataManager";
 import { EditorContent } from "@/components/EditorContent";
 import { EditorFooter } from "@/components/EditorFooter";
 import { EditorHeader } from "@/components/EditorHeader";
-
+import _ from 'lodash';
 
 function RecordLoader() {
-  const { setRecord } = useRecordEditor();
-  const { state } = useData();
+  const { record, setRecord } = useRecordEditor();
+  const { state, dispatch } = useData();
   const { currentRecordId, records } = state;
 
   useEffect(() => {
@@ -24,6 +24,22 @@ function RecordLoader() {
       setRecord(defaultRecord(1));
     }
   }, [currentRecordId, records, setRecord]);
+
+  useEffect(() => {
+    console.log("Record changed, checking for modifications...");
+    // 对比record和state中的当前记录，若不同则设置isModified为true
+    if (currentRecordId) {
+      const current = records.find(r => r.id === currentRecordId);
+      if (current) {
+        const isModified = !_.isEqual(current, record)
+        dispatch({ type: 'SET_MODIFIED', payload: isModified });
+      }
+    } else {
+      // 新建草稿，若record不等于defaultRecord则视为修改
+      const isModified = !_.isEqual(record, defaultRecord(1))
+      dispatch({ type: 'SET_MODIFIED', payload: isModified });
+    }
+  }, [currentRecordId, record])
 
   return <>
     <EditorHeader />

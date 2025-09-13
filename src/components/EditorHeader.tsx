@@ -58,14 +58,14 @@ export function EditorHeader() {
       {/* 右侧：模式切换 */}
       <div className="flex gap-3 ml-6">
         <Button
-          variant={record.note_type === 1 ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, note_type: 1 }))}
+          variant={record.noteType === 1 ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, noteType: 1 }))}
         >
           周报日报
         </Button>
         <Button
-          variant={record.note_type === 2 ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, note_type: 2 }))}
+          variant={record.noteType === 2 ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, noteType: 2 }))}
         >
           科研日记
         </Button>
