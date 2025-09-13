@@ -120,29 +120,26 @@ export const analyseRecord = camelSnake(
   }
 )
 
-export async function searchRecords(params: {
-  from?: Date;
-  to?: Date;
-  noteType?: string;
-  keyword?: string;
-}): Promise<RecordData[]> {
-  const response = await fetch(`${API_BASE_URL}/notes/search`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({
-      from: params.from?.toISOString(),
-      to: params.to?.toISOString(),
-      noteType: params.noteType,
-      keyword: params.keyword
-    })
-  });
+export const searchRecords = camelSnake(
+  async (params: {
+    from?: Date;
+    to?: Date;
+    noteType?: string;
+    keyword?: string;
+  }): Promise<RecordData[]> => {
+    const response = await fetch(`${API_BASE_URL}/notes/search`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
   }
-
-  return await response.json();
-}
+)

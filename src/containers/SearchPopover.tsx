@@ -80,7 +80,7 @@ export function SearchPopover({ onSearch }: SearchPopoverProps) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full">
-                    {searchParams.from?.toLocaleDateString() || "选择时间"}
+                    {searchParams.from?.toLocaleDateString() || new Date().toLocaleDateString()}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -97,14 +97,14 @@ export function SearchPopover({ onSearch }: SearchPopoverProps) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full">
-                    {searchParams.to?.toLocaleDateString() || "选择时间"}
+                    {searchParams.to?.toLocaleDateString() || new Date().toLocaleDateString()}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     mode="single"
                     selected={searchParams.to}
-                    onSelect={(date) => setSearchParams({...searchParams, to: date})}
+                    onSelect={(date) => setSearchParams({...searchParams, to: date })}
                   />
                 </PopoverContent>
               </Popover>
