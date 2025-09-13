@@ -21,7 +21,7 @@ export function defaultRecord(type: RecordType = 1): RecordData {
     head: '',
     body: '',
     tail: '',
-    analyse: '',
+    summary: '',
     archivedAt: null,
     createdAt: '',
     updatedAt: ''
@@ -64,7 +64,7 @@ export function searchRecords(records: RecordData[], searchTerm: string): Record
     record.head.toLowerCase().includes(term) ||
     record.body.toLowerCase().includes(term) ||
     record.tail.toLowerCase().includes(term) ||
-    record.analyse.toLowerCase().includes(term)
+    record.summary.toLowerCase().includes(term)
     // TODO: 
     //record.note_type.toLowerCase().includes(term)
   );
