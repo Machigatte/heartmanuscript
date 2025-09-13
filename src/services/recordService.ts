@@ -1,7 +1,7 @@
 import { RecordData } from '../dataManager/types';
 import { camelSnake } from '@/lib/camel';
 
-const API_BASE_URL = 'http://jp3.neptunia.net.eu.org:8080';
+const API_BASE_URL = './';
 // const API_BASE_URL = 'http://localhost:8080';
 
 // 获取所有记录
