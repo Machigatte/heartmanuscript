@@ -83,7 +83,7 @@ export const deleteRecord = camelSnake(
 
 // 归档记录
 export const archiveRecord = camelSnake(
-  async (record: RecordData): Promise<void> => {
+  async (record: RecordData): Promise<RecordData> => {
     if (!record.id) throw new Error('Record id is required for archive');
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/archive`, {
       method: 'PUT',
@@ -95,7 +95,7 @@ export const archiveRecord = camelSnake(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return ;
+    return response.json();
   }
 )
 
