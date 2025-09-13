@@ -1,5 +1,5 @@
 "use client";
-import { Sidebar } from "@/containers/Sidebar";
+import { Sidebar } from "@/components/Sidebar";
 import { RecordEditor } from "@/containers/RecordEditor";
 import { DataProvider } from "@/dataManager";
 
