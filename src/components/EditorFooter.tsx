@@ -29,6 +29,11 @@ export function EditorFooter() {
 
   const handleAnalyse = async () => {
     try {
+      if (!state.currentRecordId) {
+      toast("请先保存记录再进行分析");
+      return;
+    }
+
       await analyseRecord(record);
       
       dispatch({ type: 'UPDATE_RECORD', payload: record });
@@ -58,7 +63,7 @@ export function EditorFooter() {
         return;
       }
       const archived = await archiveRecord(record);
-      dispatch({ type: 'UPDATE_RECORD', payload: archived });
+      // dispatch({ type: 'UPDATE_RECORD', payload: archived });
       toast("归档成功");
     } catch (e) {
       toast("归档失败");

@@ -41,13 +41,6 @@ export function EditorHeader() {
                 </div>
               </PopoverTrigger>
             </TooltipTrigger>
-            <PopoverContent>
-              <Calendar
-                mode="single"
-                className="rounded-md border shadow-sm"
-                captionLayout="dropdown"
-              />
-            </PopoverContent>
           </Popover>
           <TooltipContent>
             <p>再坚持一下吧</p>
@@ -68,6 +61,13 @@ export function EditorHeader() {
           onClick={() => setRecord(r => ({ ...r, noteType: 2 }))}
         >
           科研日记
+        </Button>
+
+        <Button
+          variant={record.noteType === 3 ? "default" : "outline"}
+          onClick={() => setRecord(r => ({ ...r, noteType: 3 }))}
+        >
+          随想
         </Button>
       </div>
     </header>

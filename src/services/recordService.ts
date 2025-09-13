@@ -83,7 +83,7 @@ export const deleteRecord = camelSnake(
 
 // 归档记录
 export const archiveRecord = camelSnake(
-  async (record: RecordData): Promise<RecordData> => {
+  async (record: RecordData): Promise<void> => {
     if (!record.id) throw new Error('Record id is required for archive');
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/archive`, {
       method: 'PUT',
@@ -91,12 +91,11 @@ export const archiveRecord = camelSnake(
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(record)
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return response.json();
+    return ;
   }
 )
 
@@ -104,13 +103,12 @@ export const archiveRecord = camelSnake(
 export const analyseRecord = camelSnake(
   async (record: RecordData): Promise<void> => {
     if (!record.id) throw new Error('Record id is required for analysis');
-    const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/analysis`, {
+    const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/analyse`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(record)
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

@@ -23,7 +23,15 @@ const typeConfig = {
       { field: 'tail', label: '结果' },
       { field: 'summary', label: '分析结果', optional: true }
     ]
-  }
+  },
+  3: {
+    sections: [
+      { field: 'head', label: '实验安排' , optional: true },
+      { field: 'body', label: '小记' },
+      { field: 'tail', label: '结果' , optional: true },
+      { field: 'summary', label: '分析结果', optional: true }
+    ]
+  },
 };
 
 export function RecordWrapper({ type, record, isArchived, onChange }: RecordWrapperProps) {

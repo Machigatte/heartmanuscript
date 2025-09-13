@@ -57,9 +57,6 @@ export function Sidebar() {
     }
   };
   
-  
-
-
   const handleDeleteRecord = (id: string) => {
     try {
       deleteRecord(id)
