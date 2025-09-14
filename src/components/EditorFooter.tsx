@@ -9,6 +9,8 @@ import { useState } from "react";
 export function EditorFooter() {
   const { record } = useRecordEditor();
   const { state, dispatch, loadRecords } = useData();
+  const isArchived = Boolean(record.archivedAt);
+
   const handleSave = async () => {
     try {
       if (!state.currentRecordId) {
@@ -73,8 +75,8 @@ export function EditorFooter() {
       <div /> {/* 占位左侧 */}
       {/* 右侧三个功能按钮 */}
       <div className="flex justify-end gap-3">
-        <Button variant="outline" onClick={handleSave}>保存</Button>
-        <Button variant="outline" onClick={handleAnalyse}>分析</Button>
+        <Button variant="outline" onClick={handleSave} disabled={isArchived}>保存</Button>
+        <Button variant="outline" onClick={handleAnalyse} disabled={isArchived}>分析</Button>
         <Popover open={archivePopoverOpen} onOpenChange={setArchivePopoverOpen}>
           <PopoverTrigger asChild>
             <Button variant="default">归档</Button>

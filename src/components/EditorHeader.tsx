@@ -9,6 +9,7 @@ export function EditorHeader() {
   const { record, setRecord } = useRecordEditor();
   const [date, setDate] = useState<Date>(new Date(record.updatedAt));
   const [currentTime, setCurrentTime] = useState<string>();
+  const isArchived = Boolean(record.archivedAt);
 
   useEffect(() => {
     setDate(new Date(record.updatedAt));
@@ -26,7 +27,10 @@ export function EditorHeader() {
       {/* 左侧：标题 */}
       <input
         value={record.title}
-        onChange={(e) => setRecord(r => ({ ...r, title: e.target.value }))}
+        onChange={(e) => setRecord(r => {
+          if (isArchived) return r; // 已归档的记录禁止修改标题
+          return { ...r, title: e.target.value }
+        })}
         className="text-xl font-bold border-none outline-none bg-transparent"
       />
 
@@ -50,25 +54,22 @@ export function EditorHeader() {
 
       {/* 右侧：模式切换 */}
       <div className="flex gap-3 ml-6">
-        <Button
-          variant={record.noteType === 1 ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, noteType: 1 }))}
-        >
-          周报日报
-        </Button>
-        <Button
-          variant={record.noteType === 2 ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, noteType: 2 }))}
-        >
-          科研日记
-        </Button>
-
-        <Button
-          variant={record.noteType === 3 ? "default" : "outline"}
-          onClick={() => setRecord(r => ({ ...r, noteType: 3 }))}
-        >
-          随想
-        </Button>
+        {[
+          { value: 1 as const, label: "周报日报" },
+          { value: 2 as const, label: "科研日记" },
+          { value: 3 as const, label: "随想" }
+        ].map(type => (
+          <Button
+            key={type.value}
+            variant={record.noteType === type.value ? "default" : "outline"}
+            onClick={() => setRecord(r => {
+              if (isArchived) return r; // 已归档的记录禁止修改类型
+              return {...r, noteType: type.value }
+            })}
+          >
+            {type.label}
+          </Button>
+        ))}
       </div>
     </header>
   );
