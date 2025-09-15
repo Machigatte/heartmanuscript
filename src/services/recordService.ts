@@ -1,5 +1,5 @@
 import { RecordData } from '../dataManager/types';
-import { camelSnake } from '@/lib/camel';
+import { camelSnake } from '@/utils/camel';
 
 const API_BASE_URL = '';
 
