@@ -4,28 +4,54 @@ import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
 import { SearchPopover } from "@/containers/SearchPopover";
 
-import { useState } from "react";
 import { ItemWrapper } from "../containers/itemWrapper";
 import { SettingWrapper } from "../containers/settingWrapper";
-import { useData, sortRecordsByDate } from "@/dataManager";
+import { useData } from "@/dataManager";
 import { deleteRecord, searchRecords } from "@/services/recordService";
 import { toast } from "sonner";
+import { useConfirmDialog } from "@/contexts/ConfirmDialogContext";
 
 export function Sidebar() {
   // 使用数据管理系统
   const { state, dispatch, loadRecords  } = useData();
   const { records, currentRecordId } = state;
+  const { show } = useConfirmDialog();
   
   // 处理历史记录项点击事件
   const handleItemClick = (id: string) => {
-    // 确保总是更新选中状态，即使点击的是当前选中的item
-    dispatch({ type: 'SET_CURRENT_RECORD', payload: id });
+    if (state.isModified && id !== currentRecordId) {
+      show({
+        title: "更改未保存",
+        description: "确定要离开吗？如果您现在离开，您当前的信息不会被保存。",
+        confirmText: "留下",
+        cancelText: "离开",
+        onCancel: () => {
+          console.log("Setting current record to:", id);
+          dispatch({ type: 'SET_CURRENT_RECORD', payload: id });
+        }
+      });
+    } else {
+      // 不存在未保存更改，直接更新当前记录
+      dispatch({ type: 'SET_CURRENT_RECORD', payload: id });
+    }
   };
   
   // 处理添加新记录的点击事件
   const handleAddNew = () => {
-    // 创建新记录并添加到记录列表
-    dispatch({ type: 'CREATE_DRAFT' });
+    if(state.isModified) {
+      show({
+        title: "创建草稿",
+        description: "当前记录未保存，是否创建草稿？",
+        confirmText: "取消",
+        cancelText: "创建",
+        onCancel: () => {
+          // 创建草稿
+          dispatch({ type: 'CREATE_DRAFT' });
+        }
+      })
+    } else {
+      dispatch({ type: 'CREATE_DRAFT' });
+    }
   };
 
   // 处理保存设置

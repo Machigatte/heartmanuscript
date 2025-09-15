@@ -31,10 +31,10 @@ export function EditorFooter() {
 
   const handleAnalyse = async () => {
     try {
-      if (!state.currentRecordId) {
-      toast("请先保存记录再进行分析");
-      return;
-    }
+      if (!state.currentRecordId || state.isModified) {
+        toast("请先保存记录再进行分析");
+        return;
+      }
 
       const result = await analyseRecord(record);
       dispatch({ type: 'UPDATE_RECORD', payload: result });
