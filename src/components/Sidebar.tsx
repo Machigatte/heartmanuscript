@@ -92,6 +92,24 @@ export function Sidebar() {
       toast("删除失败")
     }
   };
+
+  // 处理安全刷新 - 检查是否有未保存的更改
+  const handleSafeRefresh = () => {
+    if (state.isModified) {
+      show({
+        title: "更改未保存",
+        description: "刷新列表将丢失当前未保存的更改。确定要继续吗？",
+        confirmText: "取消",
+        cancelText: "刷新",
+        onCancel: () => {
+          loadRecords();
+        }
+      });
+    } else {
+      // 没有未保存的更改，直接刷新
+      loadRecords();
+    }
+  };
   
   // 按日期排序记录
   // const sortedRecords = sortRecordsByDate(records);
@@ -104,7 +122,7 @@ export function Sidebar() {
 
           <SearchPopover onSearch={handleSearchRecords} />
 
-          <Button variant="ghost" size="icon" onClick={loadRecords}>
+          <Button variant="ghost" size="icon" onClick={handleSafeRefresh}>
             <RefreshCw className="w-4 h-4" />
           </Button>
           <Button variant="ghost" size="icon" onClick={handleAddNew}>
