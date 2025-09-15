@@ -37,15 +37,11 @@ export function EditorHeader() {
       {/* 中间：实时时间显示（带悬浮提示和点击选择） */}
       <TooltipProvider>
         <Tooltip>
-          <Popover>
-            <TooltipTrigger>
-              <PopoverTrigger asChild>
-                <div className="text-gray-600 font-mono text-sm cursor-pointer">
-                  {currentTime}
-                </div>
-              </PopoverTrigger>
-            </TooltipTrigger>
-          </Popover>
+          <TooltipTrigger>
+            <div className="text-gray-600 font-mono text-sm cursor-pointer">
+              {currentTime}
+            </div>
+          </TooltipTrigger>
           <TooltipContent>
             <p>再坚持一下吧</p>
           </TooltipContent>

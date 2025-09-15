@@ -12,7 +12,6 @@ function RecordLoader() {
   const { currentRecordId, records } = state;
 
   useEffect(() => {
-    console.log("Current Record ID:", currentRecordId);
     if (currentRecordId) {
       // 记录存在
       const current = records.find(r => r.id === currentRecordId);
@@ -26,7 +25,6 @@ function RecordLoader() {
   }, [currentRecordId, records, setRecord]);
 
   useEffect(() => {
-    console.log("Record changed, checking for modifications...");
     // 对比record和state中的当前记录，若不同则设置isModified为true
     if (currentRecordId) {
       const current = records.find(r => r.id === currentRecordId);
