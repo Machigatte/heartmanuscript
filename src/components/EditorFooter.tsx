@@ -36,10 +36,9 @@ export function EditorFooter() {
       return;
     }
 
-      await analyseRecord(record);
-      
-      dispatch({ type: 'UPDATE_RECORD', payload: record });
-      loadRecords();
+      const result = await analyseRecord(record);
+      dispatch({ type: 'UPDATE_RECORD', payload: result });
+      // loadRecords();
       toast("分析成功");
     } catch (e) {
       toast("分析失败");

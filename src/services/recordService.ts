@@ -100,7 +100,7 @@ export const archiveRecord = camelSnake(
 
 // 分析记录
 export const analyseRecord = camelSnake(
-  async (record: RecordData): Promise<void> => {
+  async (record: RecordData): Promise<RecordData> => {
     if (!record.id) throw new Error('Record id is required for analysis');
     const response = await fetch(`${API_BASE_URL}/notes/${encodeURIComponent(record.id)}/analyse`, {
       method: 'PUT',
@@ -112,8 +112,7 @@ export const analyseRecord = camelSnake(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    // 204 No Content，无需返回内容
-    return;
+    return response.json();
   }
 )
 
