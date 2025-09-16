@@ -8,6 +8,7 @@ import { ItemWrapper } from "../containers/itemWrapper";
 import { SettingWrapper } from "../containers/settingWrapper";
 import { useData } from "@/dataManager";
 import { deleteRecord, searchRecords } from "@/services/recordService";
+import { sortRecordsByDate } from "@/dataManager/dataUtils";
 import { toast } from "sonner";
 import { useConfirmDialog } from "@/contexts/ConfirmDialogContext";
 
@@ -111,8 +112,8 @@ export function Sidebar() {
     }
   };
   
-  // 按日期排序记录
-  // const sortedRecords = sortRecordsByDate(records);
+  // 按日期排序记录（最新的在前）
+  const sortedRecords = sortRecordsByDate(records);
   return (
     <aside className="w-64 border-r bg-white flex flex-col">
       <div className="flex justify-between items-center p-4">
@@ -138,8 +139,8 @@ export function Sidebar() {
         
         {/* 上面列表 */}
         <ul className="space-y-1">
-          {records.length > 0 ? (
-            records.map((item) => (
+          {sortedRecords.length > 0 ? (
+            sortedRecords.map((item) => (
               <ItemWrapper
                 key={item.id}
                 item={item}
