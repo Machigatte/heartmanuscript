@@ -50,7 +50,7 @@ export function EditorFooter() {
   const confirmArchive = async () => {
     setArchivePopoverOpen(false);
     
-    if (!state.currentRecordId) {
+    if (!state.currentRecordId || state.isModified) {
       toast("请先保存记录再进行归档");
       return;
     }
