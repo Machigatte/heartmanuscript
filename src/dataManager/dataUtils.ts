@@ -43,9 +43,10 @@ export function formatDate(dateString: string): string {
 }
 
 // 按日期排序记录（最新的在前）
+// 所有记录均使用创建时间进行排序，确保归档操作不会改变记录的位置
 export function sortRecordsByDate(records: RecordData[]): RecordData[] {
   return [...records].sort((a, b) => {
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 }
 
