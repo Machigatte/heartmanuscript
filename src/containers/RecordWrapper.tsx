@@ -1,4 +1,5 @@
 import { useRecordEditor } from "./RecordEditorContext";
+import { useAutoResize } from "../hooks/useAutoResize";
 
 interface RecordWrapperProps {
   type: number;
@@ -34,6 +35,35 @@ const typeConfig = {
   },
 };
 
+// Auto-resizing textarea component
+function AutoResizeTextarea({ 
+  value, 
+  onChange, 
+  readOnly, 
+  className,
+  placeholder 
+}: {
+  value: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  readOnly?: boolean;
+  className?: string;
+  placeholder?: string;
+}) {
+  const textareaRef = useAutoResize(value, { minHeight: 60, maxHeight: 400 });
+
+  return (
+    <textarea
+      ref={textareaRef}
+      className={className}
+      value={value}
+      onChange={onChange}
+      readOnly={readOnly}
+      placeholder={placeholder}
+      style={{ resize: 'none', overflow: 'hidden' }}
+    />
+  );
+}
+
 export function RecordWrapper({ type, record, isArchived, onChange }: RecordWrapperProps) {
   const config = typeConfig[type as keyof typeof typeConfig] || { sections: [] };
 
@@ -44,9 +74,8 @@ export function RecordWrapper({ type, record, isArchived, onChange }: RecordWrap
         return (
           <div key={section.field}>
             <h3 className="font-semibold">{section.label}</h3>
-            <textarea
+            <AutoResizeTextarea
               className="w-full border rounded p-2"
-              rows={3}
               value={record[section.field] || ''}
               onChange={!isArchived ? (e) => onChange?.(section.field, e.target.value) : undefined}
               readOnly={isArchived}
