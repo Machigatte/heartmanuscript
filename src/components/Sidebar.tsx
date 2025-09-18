@@ -115,7 +115,7 @@ export function Sidebar() {
   // 按日期排序记录（最新的在前）
   const sortedRecords = sortRecordsByDate(records);
   return (
-    <aside className="w-64 border-r bg-white flex flex-col">
+    <aside className="w-full bg-white flex flex-col">
       <div className="flex justify-between items-center p-4">
         <h2 className="text-lg font-semibold">以前</h2>
         <div className="flex space-x-1">
