@@ -25,15 +25,15 @@ export default function LoginPage() {
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto mt-24">
-      <CardHeader>
-        <CardTitle>登录 Orinote</CardTitle>
-        <CardDescription>
-          输入您的邮箱及密码以登录您的账户
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
+    <form action="/login" method="post">
+      <Card className="w-full max-w-sm mx-auto mt-24">
+        <CardHeader>
+          <CardTitle>登录 Orinote</CardTitle>
+          <CardDescription>
+            输入您的邮箱及密码以登录您的账户
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">邮箱</Label>
@@ -57,29 +57,29 @@ export default function LoginPage() {
               <Input id="password" type="password" required />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          登录
-        </Button>
-        <div className="flex items-center w-full gap-3 mt-2 mb-2">
-          <Separator className="flex-1" />
-          <div className="text-sm text-muted-foreground">或者</div>
-          <Separator className="flex-1" />
-        </div>
-        <Button variant="outline" className="w-full">
-          <IconBrandGoogle />
-          使用 Google 登录
-        </Button>
-        <Button
-          variant="outline" className="w-full"
-          onClick={handleGithubLogin}
-        >
-          <IconBrandGithub />
-          使用 GitHub 登录
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" className="w-full">
+            登录
+          </Button>
+          <div className="flex items-center w-full gap-3 mt-2 mb-2">
+            <Separator className="flex-1" />
+            <div className="text-sm text-muted-foreground">或者</div>
+            <Separator className="flex-1" />
+          </div>
+          <Button variant="outline" className="w-full">
+            <IconBrandGoogle />
+            使用 Google 登录
+          </Button>
+          <Button
+            variant="outline" className="w-full"
+            onClick={handleGithubLogin}
+          >
+            <IconBrandGithub />
+            使用 GitHub 登录
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 }
