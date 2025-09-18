@@ -1,7 +1,8 @@
 import { RecordData } from '../dataManager/types';
 import { camelSnake } from '@/utils/camel';
+import { config } from '@/config';
 
-const API_BASE_URL = '';
+const API_BASE_URL = config.backendUrl;
 
 // 获取所有记录
 export const fetchAllRecords = camelSnake(
