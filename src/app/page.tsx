@@ -2,7 +2,7 @@
 import ConfirmDialogRenderer from "@/components/ConfirmDialogRenderer";
 import { Sidebar } from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { RecordEditor } from "@/containers/RecordEditor";
+import { RecordEditor } from "@/components/RecordEditor";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -16,7 +16,7 @@ export default function RecordInterface() {
     <DataProvider>
       <ConfirmDialogProvider>
         <ResizablePanelGroup className="h-screen w-64" direction="horizontal">
-          <ResizablePanel defaultSize={20} minSize={20} maxSize={30}>
+          <ResizablePanel defaultSize={20} minSize={16} maxSize={30}>
             {/* 左侧历史记录 */}
             <Sidebar />
           </ResizablePanel>

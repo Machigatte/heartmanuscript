@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "./ui/button";
+import { SettingsContent } from "./SettingsContent";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 
 export default function SidebarFooter() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="w-full px-3 py-2 border-t border-gray-200">
       <div className="flex items-center justify-between">
@@ -19,9 +24,15 @@ export default function SidebarFooter() {
         </div>
 
         {/* 右边：设置按钮 */}
-        <button className="p-2 rounded-xl hover:bg-gray-100 transition-colors">
-          <Settings className="w-5 h-5 text-gray-600" />
-        </button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="p-2 rounded-full" variant="ghost" size="icon">
+              <Settings className="w-5 h-5 text-gray-600" />
+            </Button>
+          </DialogTrigger>
+
+          <SettingsContent />
+        </Dialog>
       </div>
     </div>
   );

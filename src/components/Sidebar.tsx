@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
-import { SearchPopover } from "@/containers/SearchPopover";
+import { SearchPopover } from "@/components/SearchPopover";
 
-import { ItemWrapper } from "../containers/itemWrapper";
+import { ItemWrapper } from "@/components/ItemWrapper";
 import { useData } from "@/dataManager";
 import { deleteRecord, searchRecords } from "@/services/recordService";
 import { sortRecordsByDate } from "@/dataManager/dataUtils";

@@ -1,5 +1,5 @@
-import { useRecordEditor } from "../containers/RecordEditorContext";
-import { RecordWrapper } from "../containers/RecordWrapper";
+import { useRecordEditor } from "./RecordEditorContext";
+import { RecordWrapper } from "./RecordWrapper";
 
 export function EditorContent() {
   const { record, setRecord } = useRecordEditor();
