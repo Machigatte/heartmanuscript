@@ -39,7 +39,12 @@ export function ItemWrapper({
       }}
     >
       <div className="flex-1 min-w-0">
-        <span className="truncate">{item.title || "未命名记录"}</span>
+        <span
+          className="block truncate"
+          style={{ maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          {item.title || "未命名记录"}
+        </span>
       </div>
       
       {onDelete && isSelected && (
