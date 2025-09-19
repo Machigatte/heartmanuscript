@@ -5,12 +5,12 @@ import { Plus, RefreshCw } from "lucide-react";
 import { SearchPopover } from "@/containers/SearchPopover";
 
 import { ItemWrapper } from "../containers/itemWrapper";
-import { SettingWrapper } from "../containers/settingWrapper";
 import { useData } from "@/dataManager";
 import { deleteRecord, searchRecords } from "@/services/recordService";
 import { sortRecordsByDate } from "@/dataManager/dataUtils";
 import { toast } from "sonner";
 import { useConfirmDialog } from "@/contexts/ConfirmDialogContext";
+import SidebarFooter from "./SidebarFooter";
 
 export function Sidebar() {
   // 使用数据管理系统
@@ -55,17 +55,6 @@ export function Sidebar() {
     }
   };
 
-  // 处理保存设置
-  const handleSaveSettings = (settings: { model: string; apiKey: string }) => {
-    dispatch({ 
-      type: 'UPDATE_SETTINGS', 
-      payload: { 
-        model: settings.model, 
-        apiKey: settings.apiKey 
-      } 
-    });
-  };
-  
   const handleSearchRecords = async (params: {
     from?: Date;
     to?: Date;
@@ -115,12 +104,10 @@ export function Sidebar() {
   // 按日期排序记录（最新的在前）
   const sortedRecords = sortRecordsByDate(records);
   return (
-    <aside className="w-full bg-white flex flex-col">
+    <aside className="w-full h-screen bg-white flex flex-col">
       <div className="flex justify-between items-center p-4">
         <h2 className="text-lg font-semibold">以前</h2>
         <div className="flex space-x-1">
-          <SettingWrapper onSaveSettings={handleSaveSettings} />
-
           <SearchPopover onSearch={handleSearchRecords} />
 
           <Button variant="ghost" size="icon" onClick={handleSafeRefresh}>
@@ -132,11 +119,8 @@ export function Sidebar() {
         </div>
       </div>
 
-      
-
       {/* 列表容器 */}
       <div className="flex flex-col flex-1 overflow-y-auto p-2">
-        
         {/* 上面列表 */}
         <ul className="space-y-1">
           {sortedRecords.length > 0 ? (
@@ -156,9 +140,10 @@ export function Sidebar() {
             </li>
           )}
         </ul>
-
-        
       </div>
+
+      {/* 底部用户信息 */}
+      <SidebarFooter />
     </aside>
   );
 }
