@@ -2,7 +2,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { Calendar } from "./ui/calendar";
 import { Button } from "./ui/button";
-import { useRecordEditor } from "../containers/RecordEditorContext";
+import { useRecordEditor } from "./RecordEditorContext";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge"
 import { useData } from "@/dataManager";

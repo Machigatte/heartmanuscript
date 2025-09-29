@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
-import { useRecordEditor } from "@/containers/RecordEditorContext";
+import { useRecordEditor } from "@/components/RecordEditorContext";
 import { useData } from "@/dataManager";
 import { createRecord, updateRecord, archiveRecord, analyseRecord} from "@/services/recordService";
 import { toast } from "sonner"
