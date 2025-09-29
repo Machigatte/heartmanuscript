@@ -36,10 +36,10 @@ export default function LoginPage() {
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">邮箱</Label>
+              <Label htmlFor="username">邮箱</Label>
               <Input
-                id="email"
-                type="email"
+                id="username"
+                type="text"
                 placeholder="me@example.com"
                 required
               />
