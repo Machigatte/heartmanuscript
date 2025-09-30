@@ -54,7 +54,7 @@ export function SettingsContent() {
         </DialogHeader>
 
         <div className="mt-4 text-gray-700">
-          {ActivePanel ? <ActivePanel /> : <p>此部分内容正在建设中。</p>}
+          {ActivePanel ? <ActivePanel /> : <p>此部分内容正在建设中</p>}
         </div>
       </div>
     </DialogContent>
