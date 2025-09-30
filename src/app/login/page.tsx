@@ -18,9 +18,7 @@ import { IconBrandGoogle } from "@tabler/icons-react";
 export default function LoginPage() {
   // 跳转到 GitHub OAuth2 授权页面
   const handleGithubLogin = () => {
-    const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-    const redirectUri = typeof window !== "undefined" ? window.location.origin + "/api/auth/callback" : "";
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=read:user`;
+    const githubAuthUrl = `/oauth2/authorization/github`;
     window.location.href = githubAuthUrl;
   };
 
