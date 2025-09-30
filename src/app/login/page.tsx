@@ -24,23 +24,23 @@ export default function LoginPage() {
     window.location.href = githubAuthUrl;
   };
 
-  /*
+  return (
     <form action="/login" method="post">
       <Card className="w-full max-w-sm mx-auto mt-24">
         <CardHeader>
           <CardTitle>登录 Orinote</CardTitle>
           <CardDescription>
-            输入您的邮箱及密码以登录您的账户
+            输入您的用户名及密码以登录您的账户
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="username">邮箱</Label>
+              <Label htmlFor="username">用户名</Label>
               <Input
                 id="username"
+                name="username"
                 type="text"
-                placeholder="me@example.com"
                 required
               />
             </div>
@@ -54,7 +54,7 @@ export default function LoginPage() {
                   忘记密码？
                 </a>
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" name="password" type="password" required />
             </div>
           </div>
         </CardContent>
@@ -80,36 +80,6 @@ export default function LoginPage() {
           </Button>
         </CardFooter>
       </Card>
-    </form>
-    */
-  return (
-    <form action="/login" method="post">
-      <div className="grid gap-2 w-full max-w-sm mx-auto mt-24">
-        <Label htmlFor="username">邮箱</Label>
-        <Input
-          id="username"
-          name="username"
-          type="text"
-          placeholder="me@example.com"
-          required
-        />
-      </div>
-      <div className="grid gap-2 w-full max-w-sm mx-auto mt-6">
-        <div className="flex items-center">
-          <Label htmlFor="password">密码</Label>
-          <a
-            href="#"
-            className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-          > 忘记密码？
-          </a>
-        </div>
-        <Input id="password" name="password" type="password" required />
-      </div>
-      <div className="w-full max-w-sm mx-auto mt-6">
-        <Button type="submit" className="w-full">
-          登录
-        </Button>
-      </div>
     </form>
   );
 }
