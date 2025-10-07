@@ -20,7 +20,7 @@ import { config } from "@/config";
 export default function LoginPage() {
   // 跳转到 GitHub OAuth2 授权页面
   const handleGithubLogin = () => {
-    const githubAuthUrl = `/oauth2/authorization/github`;
+    const githubAuthUrl = config.rootUrl + `/oauth2/authorization/github`;
     window.location.href = githubAuthUrl;
   };
 
@@ -106,7 +106,8 @@ export default function LoginPage() {
             使用 Google 登录
           </Button>
           <Button
-            variant="outline" className="w-full"
+            variant="outline"
+            className="w-full"
             onClick={handleGithubLogin}
           >
             <IconBrandGithub />
