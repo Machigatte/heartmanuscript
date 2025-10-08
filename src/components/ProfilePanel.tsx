@@ -4,16 +4,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "./ui/separator";
 import { IconBrandGithub } from "@tabler/icons-react";
-import { IconBrandGoogle } from "@tabler/icons-react";
+// import { IconBrandGoogle } from "@tabler/icons-react";
 
 export function ProfilePanel() {
   const [username, setUsername] = React.useState("orinote");
   const [email, setEmail] = React.useState("example@email.com");
-
-  const handleSave = () => {
-    // 这里可以调用 API 保存
-    console.log("保存账号信息", { username, email });
-  };
 
   return (
     <div className="flex flex-col gap-4 pt-4">

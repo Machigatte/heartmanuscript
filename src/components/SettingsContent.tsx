@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { User, MessageCircleMore, Info, Settings, Palette } from "lucide-react";
+import { User, MessageCircleMore, Info, Settings } from "lucide-react";
 import { ProfilePanel } from "./ProfilePanel";
 
 const tabs = [

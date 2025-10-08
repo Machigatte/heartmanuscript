@@ -1,5 +1,5 @@
 import { defaultRecord, RecordData } from "@/dataManager";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 interface RecordEditorContextProps {
   record: RecordData;

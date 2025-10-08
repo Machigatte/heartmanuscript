@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { AppState, RecordData, AppSettings } from './types';
-import { deleteRecord, fetchAllRecords } from '../services/recordService';
+import { fetchAllRecords } from '../services/recordService';
 import { toast } from 'sonner';
 
 // 初始状态

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "./ui/button";
@@ -6,8 +6,6 @@ import { SettingsContent } from "./SettingsContent";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 
 export default function SidebarFooter() {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="w-full px-3 py-2 border-t border-gray-200">
       <div className="flex items-center justify-between">

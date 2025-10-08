@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -52,7 +51,8 @@ export default function LoginPage() {
         setError("登录失败");
       }
     } catch (err) {
-      setError("网络错误");
+      console.error(err);
+      setError("网络错误，请稍后重试");
     }
     setLoading(false);
   };
