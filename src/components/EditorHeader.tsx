@@ -1,6 +1,4 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { Calendar } from "./ui/calendar";
 import { Button } from "./ui/button";
 import { useRecordEditor } from "./RecordEditorContext";
 import { useEffect, useState } from "react";
@@ -10,7 +8,7 @@ import { useData } from "@/dataManager";
 export function EditorHeader() {
   const { record, setRecord } = useRecordEditor();
   const { state } = useData();
-  const [date, setDate] = useState<Date>(new Date(record.updatedAt));
+  const [, setDate] = useState<Date>(new Date(record.updatedAt));
   const [currentTime, setCurrentTime] = useState<string>();
   const isArchived = Boolean(record.archivedAt);
   const isDraft = !record.id;

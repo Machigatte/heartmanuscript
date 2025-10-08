@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export function EditorFooter() {
   const { record } = useRecordEditor();
-  const { state, dispatch, loadRecords } = useData();
+  const { state, dispatch } = useData();
   const isArchived = Boolean(record.archivedAt);
 
   const handleSave = async () => {
@@ -25,6 +25,7 @@ export function EditorFooter() {
         toast("更新成功")
       }
     } catch (e) {
+      console.error(e);
       toast("发生错误，保存失败")
     }
   };
@@ -41,6 +42,7 @@ export function EditorFooter() {
       // loadRecords();
       toast("分析成功");
     } catch (e) {
+      console.error(e);
       toast("分析失败");
     }
   };
@@ -65,6 +67,7 @@ export function EditorFooter() {
       dispatch({ type: 'UPDATE_RECORD', payload: archived });
       toast("归档成功");
     } catch (e) {
+      console.error(e);
       toast("归档失败");
     }
   };

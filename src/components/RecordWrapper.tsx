@@ -1,13 +1,18 @@
 import React, { useRef, useEffect } from "react";
+import { RecordData, RecordType } from "@/dataManager/types";
+
+// 内容字段的明确类型（只包括文本字段）
+type ContentField = 'head' | 'body' | 'tail' | 'summary';
 
 interface RecordWrapperProps {
-  type: number;
-  record: any;
+  type: RecordType;
+  // 使用 Partial<RecordData> 以允许某些字段缺失（例如 optional 字段）
+  record: Partial<RecordData>;
   isArchived: boolean;
-  onChange?: (field: string, value: string) => void;
+  onChange?: (field: ContentField, value: string) => void;
 }
 
-const typeConfig = {
+const typeConfig: Record<RecordType, { sections: { field: ContentField; label: string; optional?: boolean }[] }> = {
   1: {
     sections: [
       { field: 'head', label: '工作安排' },
@@ -100,8 +105,8 @@ export function RecordWrapper({ type, record, isArchived, onChange }: RecordWrap
             <h3 className="font-semibold">{section.label}</h3>
             <AutoResizeTextarea
               className="w-full border rounded p-2"
-              value={record[section.field] || ''}
-              onChange={!isArchived ? (e) => onChange?.(section.field, e.target.value) : undefined}
+              value={(record[section.field as ContentField] as string) ?? ''}
+              onChange={!isArchived ? (e) => onChange?.(section.field as ContentField, e.target.value) : undefined}
               readOnly={isArchived}
             />
           </div>

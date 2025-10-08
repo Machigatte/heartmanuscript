@@ -6,8 +6,7 @@ import { RecordData, RecordType } from './types';
 // }
 
 // 创建默认记录（草稿）
-export function defaultRecord(type: RecordType = 1): RecordData {
-  const now = new Date().toISOString();
+export function defaultRecord(): RecordData {
   const formattedDate = new Date().toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: '2-digit',

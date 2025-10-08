@@ -20,7 +20,7 @@ function RecordLoader() {
       }
     } else {
       // 创建新草稿
-      setRecord(defaultRecord(1));
+      setRecord(defaultRecord());
     }
   }, [currentRecordId, records, setRecord]);
 
@@ -34,10 +34,10 @@ function RecordLoader() {
       }
     } else {
       // 新建草稿，若record不等于defaultRecord则视为修改
-      const isModified = !_.isEqual(record, defaultRecord(1))
+      const isModified = !_.isEqual(record, defaultRecord())
       dispatch({ type: 'SET_MODIFIED', payload: isModified });
     }
-  }, [currentRecordId, record])
+  }, [currentRecordId, dispatch, record, records])
 
   return <>
     <EditorHeader />

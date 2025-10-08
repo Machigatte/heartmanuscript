@@ -68,6 +68,7 @@ export function Sidebar() {
       dispatch({ type: 'SET_RECORDS', payload: records });
       toast("查询成功");
     } catch (error) {
+      console.error("Search records failed:", error);
       dispatch({ type: 'SET_ERROR', payload: '查询失败' });
       toast("查询失败");
     }
@@ -79,6 +80,7 @@ export function Sidebar() {
       dispatch({ type: 'DELETE_RECORD', payload: id });
       toast("删除成功")
     } catch (e) {
+      console.error(e)
       toast("删除失败")
     }
   };
