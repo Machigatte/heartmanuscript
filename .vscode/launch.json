@@ -2,28 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Node Dev",
+      "name": "Next: Dev (npm)",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm.cmd",
-      "args": ["run", "dev"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
       "cwd": "${workspaceFolder}",
-      "env": {
-        "NODE_ENV": "development"
-      },
+      "envFile": "${workspaceFolder}/.env",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
     {
-      "name": "Debug Node Prod",
+      "name": "Next: Start (production)",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm.cmd",
-      "args": ["run", "dev"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "preLaunchTask": "npm: build",
       "cwd": "${workspaceFolder}",
-      "env": {
-        "NODE_ENV": "production"
-      },
+      "envFile": "${workspaceFolder}/.env",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     }
