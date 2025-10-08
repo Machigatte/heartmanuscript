@@ -1,26 +1,14 @@
 # Use official Node LTS image for build stage
-FROM node:20-bullseye AS deps
-WORKDIR /app
-
-# Install dependencies based on lockfile if present to leverage caching
-COPY package.json package-lock.json pnpm-lock.yaml ./
-RUN if [ -f pnpm-lock.yaml ]; then \
-      npm install -g pnpm && pnpm install --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then \
-      npm ci; \
-    else \
-      npm install; \
-    fi
-
-# Build stage
+# Use a single builder stage that installs with npm and builds
 FROM node:20-bullseye AS builder
 WORKDIR /app
 
-# Copy source and installed node_modules from deps stage
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# Copy package files and install dependencies with npm
+COPY package*.json ./
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-# Build the Next.js app
+# Copy rest of the source and build
+COPY . .
 ENV NODE_ENV=production
 RUN npm run build
 
