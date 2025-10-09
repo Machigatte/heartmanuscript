@@ -8,12 +8,30 @@ const API_BASE_URL = config.apiUrl;
 // 统一 fetch，自动注入 JWT
 function authFetch(url: string, options: RequestInit = {}) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('jwt') : '';
+  if (!token) {
+    // 如果没有 JWT，直接跳转到 /login
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+    return Promise.reject(new Error('User not logged in'));
+  }
+
   options.headers = {
     ...(options.headers || {}),
-    ...(token ? { Authorization: `Bearer ${token}` } : {})
+    Authorization: `Bearer ${token}`,
   };
   options.mode = 'cors';
-  return fetch(url, options);
+
+  return fetch(url, options).then((response) => {
+    if (response.status === 401) {
+      // 如果返回 401，跳转到 /login
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+      return Promise.reject(new Error('Unauthorized'));
+    }
+    return response;
+  });
 }
 
 // 获取所有记录
