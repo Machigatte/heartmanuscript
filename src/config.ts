@@ -11,7 +11,7 @@ const defaultRoot =
     : "https://orinote.neptunia.net.eu.org";
 
 const rootUrl = stripTrailingSlash(envRoot || defaultRoot);
-const apiUrl = stripTrailingSlash(envApi || `${rootUrl}/api`);
+const apiUrl = stripTrailingSlash(envApi || `${rootUrl}/api/v1`);
 
 export type Config = {
   rootUrl: string;
