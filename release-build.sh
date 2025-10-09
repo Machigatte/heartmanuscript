@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # 获取版本号和预发布标志
 VERSION=$1
@@ -16,20 +17,18 @@ if [ -n "$PRERELEASE" ]; then
   echo "这是一个预发布版本"
 fi
 
-# 更新 gradle.properties 中的版本号
-sed -i "s/^version=.*/version=$VERSION/" gradle.properties
+# 更新 package.json 中的版本号
+jq --arg version "$VERSION" '.version = $version' package.json > tmp.json && mv tmp.json package.json
 
-# 执行 Gradle 构建
-if [ -n "$PRERELEASE" ]; then
-  ./gradlew clean build -Pprerelease
-else
-  ./gradlew clean build
+docker build -t orinote-frontend:$VERSION .
+
+docker tag orinote-frontend:$VERSION chalkim/orinote-frontend:$VERSION
+# tag if not prerelease
+if [ -z "$PRERELEASE" ]; then
+  docker tag orinote-frontend:$VERSION chalkim/orinote-frontend:latest
 fi
 
-# 检查构建是否成功
-if [ $? -ne 0 ]; then
-  echo "Error: 构建失败"
-  exit 1
+docker push chalkim/orinote-frontend:$VERSION
+if [ -z "$PRERELEASE" ]; then
+  docker push chalkim/orinote-frontend:latest
 fi
-
-echo "构建成功"
