@@ -21,7 +21,7 @@ export default function RecordInterface() {
             <Sidebar />
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel className="h-screen flex-1 flex flex-col">
+          <ResizablePanel defaultSize={80} className="h-screen flex-1 flex flex-col">
             <RecordEditor />
           </ResizablePanel>
         </ResizablePanelGroup>
