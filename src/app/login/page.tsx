@@ -19,7 +19,7 @@ import { config } from "@/config";
 export default function LoginPage() {
   // 跳转到 GitHub OAuth2 授权页面
   const handleGithubLogin = () => {
-    const githubAuthUrl = config.rootUrl + `/oauth2/authorization/github`;
+    const githubAuthUrl = config.apiUrl + `/auth/oauth2/authorization/github`;
     window.location.href = githubAuthUrl;
   };
 
