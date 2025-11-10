@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ConfirmDialogProvider } from "@/components/dialog/ConfirmDialogContext";
+import ConfirmDialogRenderer from "@/components/dialog/ConfirmDialogRenderer";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,7 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ConfirmDialogProvider>
+          {children}
+          <ConfirmDialogRenderer />
+          <Toaster position="top-center" duration={1000} />
+        </ConfirmDialogProvider>
       </body>
     </html>
   );
