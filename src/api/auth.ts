@@ -7,8 +7,8 @@ class AuthService {
     const settings = {
       authority: 'https://auth.neptunia.net.eu.org/application/o/orinote-test/',
       client_id: "TcsOBoqSFur3DpX3K4yFFnPwgQ1a1hzUPoG2xrPm",
-      redirect_uri: "http://localhost:3000/login/callback",
-      post_logout_redirect_uri: "http://localhost:3000/login",
+      redirect_uri: "https://orinote.neptunia.net.eu.org/login/callback",
+      post_logout_redirect_uri: "https://orinote.neptunia.net.eu.org/login",
       scope: "openid profile email offline_access",
       filterProtocolClaims: true,
       loadUserInfo: true
