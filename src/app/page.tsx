@@ -1,33 +1,80 @@
 "use client";
-import ConfirmDialogRenderer from "@/components/ConfirmDialogRenderer";
-import { Sidebar } from "@/components/Sidebar";
-import { Toaster } from "@/components/ui/sonner";
-import { RecordEditor } from "@/components/RecordEditor";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
-import { DataProvider } from "@/dataManager";
-import { ConfirmDialogProvider } from "@/contexts/ConfirmDialogContext";
+import { useConfirmDialog } from "@/components/dialog/ConfirmDialogContext";
+import { QueryProvider } from "@/components/QueryProvider";
+import { NoteDetail } from "@/models/NoteDetail";
+import { DRAFT_ID } from "@/constants/note";
+import { NoteEditor } from "@/components/editor";
+import { useNoteStore } from "@/stores/useNoteStore";
+import React from "react";
+import { NoteSidebar } from "@/components/sidebar";
+import { Home } from "@/components/Home";
 
-export default function RecordInterface() {
+export default function NotePage() {
+  const { currentNoteId, isDirty, setCurrentNoteId } = useNoteStore();
+  const { show } = useConfirmDialog();
+
+  const handleNewNote = () => {
+    setCurrentNoteId(DRAFT_ID);
+  }
+
+  const handleNoteCreated = (newNote: NoteDetail) => {
+    setCurrentNoteId(newNote.id);
+  }
+
+  const handleDeleteNote = (id: number) => {
+    if (currentNoteId === id) setCurrentNoteId(null);
+  }
+
+  const handleNoteSelect = (id: number) => {
+    if (isDirty && id !== currentNoteId) {
+      show({
+        title: "更改未保存",
+        description: "确定要离开吗？如果您现在离开，您当前的信息不会被保存。",
+        confirmText: "留下",
+        cancelText: "离开",
+        onCancel: () => {
+          setCurrentNoteId(id)
+        }
+      });
+    } else {
+      setCurrentNoteId(id)
+    }
+  }
+
   return (
-    <DataProvider>
-      <ConfirmDialogProvider>
+    <React.Fragment>
+      <QueryProvider>
         <ResizablePanelGroup className="h-screen w-64" direction="horizontal">
           <ResizablePanel defaultSize={20} minSize={16} maxSize={30}>
             {/* 左侧历史记录 */}
-            <Sidebar />
+            <NoteSidebar
+              onSelectNote={handleNoteSelect}
+              onNewNote={handleNewNote}
+              onDeleteNote={handleDeleteNote}
+            />
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel className="h-screen flex-1 flex flex-col">
-            <RecordEditor />
+          <ResizablePanel defaultSize={80} className="h-screen flex-1 flex flex-col">
+            {/* 右侧编辑区域 */}
+            {
+              currentNoteId &&
+              <NoteEditor
+                currentNoteId={currentNoteId}
+                onNoteCreated={handleNoteCreated}
+              />
+            }
+            {
+              !currentNoteId &&
+              <Home onCreateNew={handleNewNote} />
+            }
           </ResizablePanel>
         </ResizablePanelGroup>
-        <ConfirmDialogRenderer />
-        <Toaster position="top-center" duration={1000} />
-      </ConfirmDialogProvider>
-    </DataProvider>
+      </QueryProvider>
+    </React.Fragment>
   );
 }

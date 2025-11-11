@@ -1,19 +1,29 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import authService from "@/api/auth";
 
 export default function LoginCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    // 解析 jwt 参数
-    const params = new URLSearchParams(window.location.search);
-    const jwt = params.get("jwt");
-    if (jwt) {
-      localStorage.setItem("jwt", jwt);
-      // 跳转到首页
-      router.replace("/");
+    async function handleCallback() {
+      try {
+        // 调用 signinCallback() 处理重定向回来的授权码
+        const user = await authService.loginCallback();
+        console.log('Access token:', user?.access_token);
+        console.log('Refresh token:', user?.refresh_token);
+        console.log('ID token:', user?.id_token);
+        console.log('Profile:', user?.profile);
+
+        // 登录完成后跳转首页
+        router.replace('/');
+      } catch (err) {
+        console.error('Callback error:', err);
+      }
     }
+
+    handleCallback();
   }, [router]);
 
   return (

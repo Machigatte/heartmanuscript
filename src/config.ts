@@ -32,4 +32,3 @@ export function getApiUrl(path = ""): string {
   const p = path.replace(/^\/+/, "");
   return `${apiUrl}/${p}`;
 }
-
