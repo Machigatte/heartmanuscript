@@ -65,7 +65,10 @@ export function NoteItem({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setShowConfirm(false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowConfirm(false)
+                  }}
                 >
                   取消
                 </Button>
