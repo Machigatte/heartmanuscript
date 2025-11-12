@@ -9,21 +9,12 @@ interface TimestampDisplayProps {
 }
 
 export function TimestampDisplay({ tooltipContent }: TimestampDisplayProps) {
-  const [now, setNow] = useState<Date | null>(null);
+  const [now, setNow] = useState<Date>(new Date());
 
   useEffect(() => {
-    const initialDate = new Date();
-    setNow(initialDate);
-
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
-
-  if (!now) {
-    return (
-      <></>
-    );
-  }
 
   const formattedTime = format(now, 'yyyy-MM-dd HH:mm:ss');
 
