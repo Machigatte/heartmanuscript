@@ -3,7 +3,6 @@ import authService from "@/api/auth";
 import { config } from "@/config";
 import camelcaseKeys from "camelcase-keys";
 import { toast } from "sonner";
-import { useNoteStore } from "@/stores/useNoteStore";
 
 const api = axios.create({
   baseURL: config.apiUrl,
@@ -29,12 +28,7 @@ api.interceptors.response.use(
       const status = error.response.status;
       switch (status) {
         case 401:
-          const {isDirty} = useNoteStore();
-          if(isDirty) {
-            toast.warning('您有未保存的更改，保存后再重新登录');
-          } else {
-            authService.login();
-          }
+          authService.login();
           break;
         case 403:
           toast.warning('没有访问权限');
