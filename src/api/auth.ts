@@ -1,35 +1,45 @@
-import { UserManager } from "oidc-client-ts";
+import { UserManager, WebStorageStateStore, User } from "oidc-client-ts";
 
 class AuthService {
-  public userManager: UserManager;
+  private userManager?: UserManager;
 
-  constructor() {
-    const settings = {
-      authority: 'https://auth.neptunia.net.eu.org/application/o/orinote/',
-      client_id: "TcsOBoqSFur3DpX3K4yFFnPwgQ1a1hzUPoG2xrPm",
-      redirect_uri: "https://orinote.neptunia.net.eu.org/login/callback",
-      post_logout_redirect_uri: "https://orinote.neptunia.net.eu.org/login",
-      scope: "openid profile email offline_access",
-      filterProtocolClaims: true,
-      loadUserInfo: true
-    };
-    this.userManager = new UserManager(settings);
+  private getUserManager() {
+    // 只在浏览器环境初始化
+    if (!this.userManager && typeof window !== "undefined") {
+      const settings = {
+        authority: 'https://auth.neptunia.net.eu.org/application/o/orinote/',
+        client_id: "TcsOBoqSFur3DpX3K4yFFnPwgQ1a1hzUPoG2xrPm",
+        redirect_uri: `${window.location.origin}/login/callback`,
+        post_logout_redirect_uri: `${window.location.origin}/login`,
+        scope: "openid profile email offline_access",
+        filterProtocolClaims: true,
+        loadUserInfo: true,
+        userStore: new WebStorageStateStore({ store: window.localStorage }),
+      };
+      this.userManager = new UserManager(settings);
+    }
+    return this.userManager;
   }
 
-  getUser() {
-    return this.userManager.getUser();
+  async getUser(): Promise<User | null> {
+    const um = this.getUserManager();
+    if (!um) return null; // SSR阶段安全返回null
+    return await um.getUser();
   }
 
   login() {
-    return this.userManager.signinRedirect();
+    const um = this.getUserManager();
+    return um?.signinRedirect();
   }
 
   loginCallback() {
-    return this.userManager.signinCallback();
+    const um = this.getUserManager();
+    return um?.signinCallback();
   }
 
   logout() {
-    return this.userManager.signoutRedirect();
+    const um = this.getUserManager();
+    return um?.signoutRedirect();
   }
 }
 

@@ -1,50 +1,39 @@
 import api from '@/api/api';
-import { NoteDetail } from '@/models/NoteDetail';
-import { NoteSummary } from '@/models/NoteSummary';
-import { NotePayload, NoteType } from './types';
-import { plainToInstance } from 'class-transformer';
+import { CreateNoteRequest, NoteDetailResponse, NoteSummaryResponse, NoteType, UpdateNoteRequest } from '@/types';
 
 const client = {
-  getCurrentUser: async () => {
-    const res = await api.get('/me');
+  getNoteById: async (id: bigint): Promise<NoteDetailResponse> => {
+    const res = await api.get(`/notes/${id}`);
     return res.data;
   },
-  getNoteById: async (id: number): Promise<NoteDetail> => {
-    const res = await api.get(`/notes/${id}`);
-    return plainToInstance(NoteDetail, res.data);
-  },
-  getAllNotes: async (): Promise<NoteSummary[]> => {
-    const res = await api.get('/notes');
-    return plainToInstance(NoteSummary, res.data as unknown[]);
-  },
-  createNote: async (data: NotePayload): Promise<NoteDetail> => {
-    const res = await api.post('/notes', data);
-    return plainToInstance(NoteDetail, res.data);
-  },
-  updateNote: async (id: number, data: NotePayload): Promise<NoteDetail> => {
-    const res = await api.put(`/notes/${id}`, data);
-    return plainToInstance(NoteDetail, res.data);
-  },
-  deleteNote: async (id: number): Promise<void> => {
-    await api.delete(`/notes/${id}`);
-  },
-  archiveNote: async (id: number): Promise<NoteDetail> => {
-    const res = await api.put(`/notes/${id}/archive`);
-    return plainToInstance(NoteDetail, res.data);
-  },
-  summarizeNote: async (id: number): Promise<NoteDetail> => {
-    const res = await api.put(`/notes/${id}/summarize`);
-    return plainToInstance(NoteDetail, res.data);
-  },
-  searchNotes: async (params: {
+  getNotes: async (params? :{
     from?: Date;
     to?: Date;
     type?: NoteType;
     keyword?: string;
-  }): Promise<NoteSummary[]> => {
+  }): Promise<NoteSummaryResponse[]> => {
     const res = await api.get('/notes/search', { params });
-    return plainToInstance(NoteSummary, res.data as unknown[]);
-  }
+    return res.data;
+  },
+  createNote: async (data: CreateNoteRequest): Promise<NoteDetailResponse> => {
+    const res = await api.post('/notes', data);
+    return res.data;
+  },
+  updateNote: async (id: bigint, data: UpdateNoteRequest): Promise<NoteDetailResponse> => {
+    const res = await api.put(`/notes/${id}`, data);
+    return res.data;
+  },
+  deleteNote: async (id: bigint): Promise<void> => {
+    await api.delete(`/notes/${id}`);
+  },
+  archiveNote: async (id: bigint): Promise<NoteDetailResponse> => {
+    const res = await api.put(`/notes/${id}/archive`);
+    return res.data;
+  },
+  summarizeNote: async (id: bigint): Promise<NoteDetailResponse> => {
+    const res = await api.put(`/notes/${id}/summarize`);
+    return res.data;
+  },
 }
 
 export default client;

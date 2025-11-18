@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { Editor } from "@/components/editor/editor";
 import { Note } from "@/types";
 import { SaveAction } from "@/components/editor/actions/SaveAction";
@@ -11,25 +11,26 @@ import EditorSkeleton from "@/components/editor/editor-skeleton";
 import { useArchiveNote, useCreateNote, useSummarizeNote, useUpdateNote } from "@/hooks/use-note-mutations";
 import { DRAFT_ID } from "@/constants/note";
 
-export default function NotePage() {
-  // const handleNoteSelect = (id: number) => {
-  //   if (isDirty && id !== currentNoteId) {
-  //     show({
-  //       title: "更改未保存",
-  //       description: "确定要离开吗？如果您现在离开，您当前的信息不会被保存。",
-  //       confirmText: "留下",
-  //       cancelText: "离开",
-  //       onCancel: () => {
-  //         setCurrentNoteId(id)
-  //       }
-  //     });
-  //   } else {
-  //     setCurrentNoteId(id)
-  //   }
-  // }
+export default function EditorPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = use(params)
 
-  const { selectedNoteId } = useSidebarStore();
-  const { data: note, isLoading: isNoteLoading } = useNote(selectedNoteId);
+  const isDraft = id === 'draft';
+  const { setSelectedNoteId } = useSidebarStore();
+
+  useEffect(() => {
+    setSelectedNoteId(!isDraft ? BigInt(id) : DRAFT_ID);
+  }, [id, isDraft, setSelectedNoteId]);
+
+  let bigintId: bigint | null = null;
+  if (id && id !== "draft") {
+    bigintId = BigInt(id);
+  }
+
+  const { data: note, isLoading: isNoteLoading } = useNote(bigintId);
 
   const { mutate: createNote } = useCreateNote();
   const { mutate: updateNote } = useUpdateNote();

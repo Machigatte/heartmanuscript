@@ -1,5 +1,5 @@
-import { NoteType } from "@/api/types";
-import { NoteDetail } from "@/models/NoteDetail";
+import { NoteType } from "@/types/api";
+import { Note } from "@/types";
 
 export type NoteContentField = 'head' | 'body' | 'tail' | 'summary';
 
@@ -43,17 +43,17 @@ export const fieldMap: FieldMap = {
 };
 
 // 草稿临时ID
-export const DRAFT_ID = -1;
+export const DRAFT_ID = BigInt(-1);
 
-export const defaultDraft: NoteDetail = {
-    id: DRAFT_ID,
-    title: '未命名笔记',
-    type: 1,
-    head: "",
-    body: "",
-    tail: "",
-    summary: "",
-    archivedAt: null,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
+export const DRAFT_NOTE: Note = {
+  id: DRAFT_ID,
+  title: '未命名笔记',
+  type: 1,
+  head: "",
+  body: "",
+  tail: "",
+  summary: "",
+  archivedAt: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
