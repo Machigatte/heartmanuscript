@@ -1,5 +1,5 @@
 "use client";
-import { Home } from "@/components/hom";
+import { Home } from "@/components/home";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import React from "react";
 
