@@ -6,6 +6,7 @@ import { useUser } from "@/hooks/use-user";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchEventSource } from "@microsoft/fetch-event-source"
 import { useState } from "react";
+import { config } from "@/config";
 
 export const SummarizeStreamAction: React.FC = () => {
   const { currentNote, isDirty, isDraft, isArchived, setRealtimeSummary } = useEditorContext();
@@ -22,7 +23,9 @@ export const SummarizeStreamAction: React.FC = () => {
 
     const token = user.access_token;
 
-    fetchEventSource(`http://localhost:8080/api/notes/${currentNote.id}/summarize-stream`, {
+    const baseUrl = config.apiUrl;
+
+    fetchEventSource(`${baseUrl}/notes/${currentNote.id}/summarize-stream`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
