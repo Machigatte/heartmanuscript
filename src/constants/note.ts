@@ -45,9 +45,12 @@ export const fieldMap: FieldMap = {
 // 草稿临时ID
 export const DRAFT_ID = BigInt(-1);
 
+const d = new Date();
+const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+
 export const DRAFT_NOTE: Note = {
   id: DRAFT_ID,
-  title: '未命名笔记',
+  title: '未命名笔记 - ' + dateStr,
   type: 1,
   head: "",
   body: "",

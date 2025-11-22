@@ -1,4 +1,5 @@
 import { DRAFT_ID } from "@/constants/note";
+import { useAppStore } from "@/stores/use-app-store";
 import { Note } from "@/types";
 import _ from "lodash";
 import { useCallback, useReducer, useMemo, useRef, useEffect } from "react";
@@ -44,7 +45,6 @@ function reducer(state: State, action: Action): State {
 
 export function useEditor(
   note: Note,
-  onDirtyChange?: (isDirty: boolean) => void
 ) {
   const [state, dispatch] = useReducer(reducer, {
     currentNote: note,
@@ -52,9 +52,15 @@ export function useEditor(
   });
 
   // 派生状态
+  const { setDirty } = useAppStore();
+
   const isDirty = useMemo(() => {
     return !_.isEqual(state.currentNote, state.originalNote);
   }, [state.currentNote, state.originalNote]);
+
+  useEffect(() => {
+    setDirty(isDirty);
+  }, [isDirty, setDirty]);
 
   const isDraft = useMemo(() => {
     return state.currentNote?.id === DRAFT_ID;
@@ -71,9 +77,8 @@ export function useEditor(
   useEffect(() => {
     if (prevDirtyRef.current !== isDirty) {
       prevDirtyRef.current = isDirty;
-      onDirtyChange?.(isDirty);
     }
-  }, [isDirty, onDirtyChange]);
+  }, [isDirty]);
 
   // 外部 note 更新 → 初次加载 / 父组件刷新数据时调用
   const init = useCallback(

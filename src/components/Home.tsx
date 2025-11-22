@@ -1,11 +1,8 @@
 import { FilePlus } from "lucide-react"; 
 import { Button } from "@/components/ui/button"; 
+import Link from "next/link";
 
-interface HomeProps {
-  onCreateNew: () => void;
-};
-
-export function Home({ onCreateNew }: HomeProps) {
+export function Home() {
   return (
     <div className="flex h-screen items-center justify-center p-4">
       {/* 核心内容容器：文本居中，垂直堆叠 */}
@@ -26,13 +23,14 @@ export function Home({ onCreateNew }: HomeProps) {
         <div className="pt-8 space-y-4 md:space-y-0 md:flex md:space-x-4 justify-center">
           
           {/* 按钮 1: 创建新笔记 (Primary 强调) */}
-          <Button 
-            onClick={onCreateNew} 
-            className="w-full md:w-auto h-10 text-base"
-          >
-            <FilePlus className="mr-2 h-4 w-4" /> 
-            创建新笔记
-          </Button>
+          <Link href="/notes/draft">
+            <Button
+              className="w-full md:w-auto h-10 text-base"
+            >
+              <FilePlus className="mr-2 h-4 w-4" />
+              创建新笔记
+            </Button>
+          </Link>
         </div>
         
       </div>

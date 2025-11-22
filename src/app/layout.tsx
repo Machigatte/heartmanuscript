@@ -21,6 +21,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Orinote",
   description: "Orinote 是一款简洁、高效的笔记软件，助您随时随地捕捉灵感、整理思绪。",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', rel: 'shortcut icon' }, 
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: {
+      url: '/apple-touch-icon.png',
+      sizes: '180x180',
+    },
+  },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({

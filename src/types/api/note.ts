@@ -33,6 +33,13 @@ const BaseNoteSchema = z.object({
   summary: z.string(),
 });
 
+export type SearchParams = {
+  type?: NoteType,
+  from?: Date,
+  to?: Date,
+  keyword?: string,
+};
+
 export const CreateNoteSchema = BaseNoteSchema;
 export const UpdateNoteSchema = BaseNoteSchema;
 

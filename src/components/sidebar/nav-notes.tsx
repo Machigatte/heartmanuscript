@@ -1,33 +1,16 @@
 "use client"
 
 import {
-  Folder,
-  Forward,
-  MoreHorizontal,
-  Trash2,
-} from "lucide-react"
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSkeleton,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import { Note } from "@/types"
-import Link from "next/link"
-import { useSidebarStore } from "@/stores/use-sidebar-store"
-import { useDeleteNote } from "@/hooks/use-note-mutations"
+import { useAppStore } from "@/stores/use-app-store"
+import NoteItem from "./note-item"
+import { useNotes } from "@/hooks/use-notes"
 
 function dayDiff(date: Date) {
   const now = new Date()
@@ -77,21 +60,9 @@ const GROUPS = [
   },
 ]
 
-
-export function NavNotes({
-  notes,
-  isLoading,
-}: {
-  notes?: Note[]
-  isLoading?: boolean
-}) {
-  const { isMobile } = useSidebar()
-  const { selectedNoteId, setSelectedNoteId } = useSidebarStore()
-  const { mutate: deleteNote } = useDeleteNote()
-
-  const handleDelete = (note: Note) => {
-    deleteNote(note)
-  }
+export function NavNotes() {
+  const { searchParams } = useAppStore();
+  const { data: notes, isLoading } = useNotes(searchParams);
 
   // 加载骨架
   if (isLoading) {
@@ -137,53 +108,7 @@ export function NavNotes({
 
               <SidebarMenu>
                 {group.notes.map((note) => (
-                  <SidebarMenuItem key={note.id}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={selectedNoteId === note.id}
-                    >
-                      <Link href={`/notes/${note.id}`}>
-                        {note.title}
-                      </Link>
-                    </SidebarMenuButton>
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <SidebarMenuAction showOnHover>
-                          <MoreHorizontal />
-                          <span className="sr-only">更多</span>
-                        </SidebarMenuAction>
-                      </DropdownMenuTrigger>
-
-                      <DropdownMenuContent
-                        className="w-48 rounded-lg"
-                        side={isMobile ? "bottom" : "right"}
-                        align={isMobile ? "end" : "start"}
-                      >
-                        <Link href={`/notes/${note.id}`}>
-                          <DropdownMenuItem>
-                            <Folder className="text-muted-foreground" />
-                            <span>打开笔记</span>
-                          </DropdownMenuItem>
-                        </Link>
-
-                        <DropdownMenuItem>
-                          <Forward className="text-muted-foreground" />
-                          <span>创建副本</span>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DropdownMenuItem
-                          variant="destructive"
-                          onClick={() => handleDelete(note)}
-                        >
-                          <Trash2 className="text-muted-foreground" />
-                          <span>删除笔记</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </SidebarMenuItem>
+                  <NoteItem key={note.id} note={note}/>
                 ))}
               </SidebarMenu>
             </SidebarGroup>

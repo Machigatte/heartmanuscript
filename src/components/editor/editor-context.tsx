@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
 import { useEditor } from "@/hooks/use-editor";
 import { Note } from "@/types";
 
@@ -11,18 +11,22 @@ interface EditorContextType {
   isArchived: boolean;
   updateField: <K extends keyof Note>(key: K, newValue: Note[K]) => void;
   reset: () => void;
+
+  realtimeSummary: string;
+  setRealtimeSummary: Dispatch<SetStateAction<string>>;
 }
 
 export const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
 interface EditorProviderProps {
   note: Note;
-  onDirtyChange: (isDirty: boolean) => void;
   children: React.ReactNode;
 }
 
-export const EditorProvider: React.FC<EditorProviderProps> = ({ note, onDirtyChange, children }) => {
-  const { currentNote, isDirty, isDraft, isArchived, updateField, reset } = useEditor(note, onDirtyChange);
+export const EditorProvider: React.FC<EditorProviderProps> = ({ note, children }) => {
+  const { currentNote, isDirty, isDraft, isArchived, updateField, reset } = useEditor(note);
+
+  const [realtimeSummary, setRealtimeSummary] = useState('');
 
   const contextValue: EditorContextType = {
     currentNote,
@@ -31,6 +35,8 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ note, onDirtyCha
     isArchived,
     updateField,
     reset,
+    realtimeSummary,
+    setRealtimeSummary
   };
 
   return (

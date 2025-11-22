@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronsUpDown } from "lucide-react"
-
+import { CalendarDays, ChevronsUpDown, Microscope, NotebookTabs, PenLine } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,25 +17,29 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Kbd } from "../ui/kbd"
-import { useSidebarStore } from "@/stores/use-sidebar-store"
+import { useAppStore } from "@/stores/use-app-store"
+import { NoteType } from "@/types"
 
 interface NoteTypeItem {
-  type: number;
+  type?: NoteType;
   name: string;
   logo: React.ElementType;
   description?: string;
 }
 
-export function NoteTypeSwitcher({
-  noteTypes,
-}: {
-  noteTypes: NoteTypeItem[]
-}) {
+const noteTypes: NoteTypeItem[] = [
+  { name: "全部", logo: NotebookTabs },
+  { type: 1, name: "工作周报", logo: CalendarDays },
+  { type: 2, name: "科研日记", logo: Microscope },
+  { type: 3, name: "随想", logo: PenLine },
+]
+
+export function NoteTypeSwitcher() {
   const { isMobile } = useSidebar()
-  const {selectedNoteType, setSelectedNoteType} = useSidebarStore();
+  const {searchParams, setSearchParams} = useAppStore();
 
   const activeNoteType = noteTypes.find(
-    (item) => item.type === selectedNoteType
+    (item) => item.type === searchParams.type
   )
 
   return (
@@ -67,12 +70,20 @@ export function NoteTypeSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              工作区
+              笔记类型
             </DropdownMenuLabel>
             {noteTypes.map((noteType, index) => (
               <DropdownMenuItem
                 key={noteType.name}
-                onClick={() => setSelectedNoteType(noteType.type)}
+                onClick={() => {
+                  if(!noteType.type) {
+                    const { ...rest } = searchParams; 
+                    setSearchParams(rest);
+                  } else {
+                    const { ...rest } = searchParams; 
+                    setSearchParams({type: noteType.type, ...rest})
+                  }
+                }}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-md border">

@@ -9,18 +9,17 @@ import EditorSkeleton from "./editor-skeleton";
 interface EditorProps {
   note: Note;
   isLoading?: boolean;
-  onDirtyChange: (isDirty: boolean) => void;
   children: React.ReactNode;
 }
 
-export const EditorBase: React.FC<EditorProps> = ({ note, isLoading, onDirtyChange, children }) => {
+export const EditorBase: React.FC<EditorProps> = ({ note, isLoading, children }) => {
   if (isLoading) {
     return (
       <EditorSkeleton />
     )
   }
   return (
-    <EditorProvider note={note} onDirtyChange={onDirtyChange}>
+    <EditorProvider note={note}>
       <div className="flex flex-col h-full">
         {children}
       </div>

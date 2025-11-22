@@ -1,29 +1,21 @@
 "use client";
-import React, { use, useEffect } from "react";
+import React, { use } from "react";
 import { Editor } from "@/components/editor/editor";
-import { Note } from "@/types";
-import { SaveAction } from "@/components/editor/actions/SaveAction";
-import { ArchiveAction } from "@/components/editor/actions/ArchiveAction";
-import { SummarizeAction } from "@/components/editor/actions/SummarizeAction";
-import { useSidebarStore } from "@/stores/use-sidebar-store";
+import { SaveAction } from "@/components/editor/actions/save-action";
+import { ArchiveAction } from "@/components/editor/actions/archive-action";
 import { useNote } from "@/hooks/use-note";
 import EditorSkeleton from "@/components/editor/editor-skeleton";
-import { useArchiveNote, useCreateNote, useSummarizeNote, useUpdateNote } from "@/hooks/use-note-mutations";
-import { DRAFT_ID } from "@/constants/note";
+import { SummarizeStreamAction } from "@/components/editor/actions/summarize-stream-action";
+import { useRequireAuth } from "@/hooks/use-require-auth";
 
 export default function EditorPage({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
+  useRequireAuth();
+
   const { id } = use(params)
-
-  const isDraft = id === 'draft';
-  const { setSelectedNoteId } = useSidebarStore();
-
-  useEffect(() => {
-    setSelectedNoteId(!isDraft ? BigInt(id) : DRAFT_ID);
-  }, [id, isDraft, setSelectedNoteId]);
 
   let bigintId: bigint | null = null;
   if (id && id !== "draft") {
@@ -32,40 +24,19 @@ export default function EditorPage({
 
   const { data: note, isLoading: isNoteLoading } = useNote(bigintId);
 
-  const { mutate: createNote } = useCreateNote();
-  const { mutate: updateNote } = useUpdateNote();
-  const { mutate: archiveNote } = useArchiveNote();
-  const { mutate: summarizeNote } = useSummarizeNote();
-
-  const handleSaveNote = async (note: Note) => {
-    if(note.id === DRAFT_ID) {
-      createNote(note);
-    } else {
-      updateNote(note);
-    }
-  }
-
-  const handleArchiveNote = async (note: Note) => {
-    archiveNote(note);
-  }
-
-  const handleSummarizeNote = async (note: Note) => {
-    summarizeNote(note);
-  }
-
   return (
     <React.Fragment>
       {/* 编辑区域 */}
       {isNoteLoading && <EditorSkeleton />}
       {
         note &&
-        <Editor key={note.id} note={note} onDirtyChange={(dirty) => console.log(dirty)}>
+        <Editor key={note.id} note={note}>
           <Editor.Header />
           <Editor.Content />
           <Editor.Actions>
-            <SaveAction onSave={handleSaveNote} />
-            <SummarizeAction onSummarize={handleSummarizeNote} />
-            <ArchiveAction onArchive={handleArchiveNote} />
+            <SaveAction />
+            <SummarizeStreamAction />
+            <ArchiveAction />
           </Editor.Actions>
         </Editor>
       }

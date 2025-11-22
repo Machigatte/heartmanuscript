@@ -1,18 +1,13 @@
 import api from '@/api/api';
-import { CreateNoteRequest, NoteDetailResponse, NoteSummaryResponse, NoteType, UpdateNoteRequest } from '@/types';
+import { CreateNoteRequest, NoteDetailResponse, NoteSummaryResponse, SearchParams, UpdateNoteRequest } from '@/types';
 
 const client = {
   getNoteById: async (id: bigint): Promise<NoteDetailResponse> => {
     const res = await api.get(`/notes/${id}`);
     return res.data;
   },
-  getNotes: async (params? :{
-    from?: Date;
-    to?: Date;
-    type?: NoteType;
-    keyword?: string;
-  }): Promise<NoteSummaryResponse[]> => {
-    const res = await api.get('/notes/search', { params });
+  getNotes: async (params? :SearchParams): Promise<NoteSummaryResponse[]> => {
+    const res = await api.get('/notes', { params });
     return res.data;
   },
   createNote: async (data: CreateNoteRequest): Promise<NoteDetailResponse> => {

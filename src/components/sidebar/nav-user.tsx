@@ -30,17 +30,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Skeleton } from "../ui/skeleton"
-import { User } from "oidc-client-ts"
 import md5 from "md5"
+import authService from "@/api/auth"
+import { useUser } from "@/hooks/use-user"
 
-export function NavUser({
-  user,
-  isLoading
-}: {
-  user?: User | null,
-  isLoading?: boolean,
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar()
+  const { data: user, isLoading } = useUser();
+
 
   function getGravatar(email: string, size = 80) {
     const hash = md5(email.trim().toLowerCase());
@@ -142,7 +139,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={authService.logout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

@@ -1,93 +1,77 @@
 "use client";
+import { Note } from "@/types";
+import { usePathname } from "next/navigation";
+import { SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Folder, Forward, MoreHorizontal, Trash2 } from "lucide-react";
+import { useDeleteNote } from "@/hooks/use-note-mutations";
+import { useAppStore } from "@/stores/use-app-store";
+import { useConfirmNavigation } from "@/hooks/use-confirm-navigation";
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { NoteSummary } from "@/models/NoteSummary";
+export default function NoteItem({ note }: { note: Note }) {
+  const pathname = usePathname();
+  const isActive = pathname === `/notes/${note.id}`;
+  const { isMobile } = useSidebar();
+  const { isDirty } = useAppStore();
+  const { confirmNavigation } = useConfirmNavigation(isDirty);
 
-interface NoteItemProps {
-  item: NoteSummary;
-  isSelected: boolean;
-  onClick?: (id: number) => void;
-  onDelete?: (id: number) => void;
-}
+  const { mutate: deleteNote } = useDeleteNote()
 
-export function NoteItem({
-  item,
-  isSelected,
-  onClick,
-  onDelete,
-}: NoteItemProps) {
-  const [showConfirm, setShowConfirm] = useState(false);
+  const handleClick = () => {
+    confirmNavigation(`/notes/${note.id}`);
+  }
+
+  const handleDelete = (note: Note) => {
+    deleteNote(note)
+  }
 
   return (
-    <div
-      className={`group flex items-center gap-2 p-2 rounded-md cursor-pointer ${
-        isSelected ? "bg-gray-100 font-medium" : "hover:bg-gray-50"
-      }`}
-      onClick={() => {
-        onClick?.(item.id);
-      }}
-    >
-      <div className="flex-1 min-w-0">
-        <span
-          className="block truncate"
-          style={{ maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+    <SidebarMenuItem key={note.id}>
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        onClick={handleClick}
+      >
+        <span>{note.title}</span>
+      </SidebarMenuButton>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction showOnHover>
+            <MoreHorizontal />
+            <span className="sr-only">更多</span>
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent
+          className="w-48 rounded-lg"
+          side={isMobile ? "bottom" : "right"}
+          align={isMobile ? "end" : "start"}
         >
-          {item.title}
-        </span>
-      </div>
-      
-      {onDelete && (
-        <Popover open={showConfirm} onOpenChange={setShowConfirm}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 hover:bg-red-100 hover:text-red-600"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowConfirm(true);
-              }}
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-56 p-3" align="end">
-            <div className="space-y-2">
-              <p className="text-sm">确定要删除这个笔记吗？</p>
-              <div className="flex justify-end space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowConfirm(false)
-                  }}
-                >
-                  取消
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete?.(item.id);
-                    setShowConfirm(false);
-                  }}
-                >
-                  删除
-                </Button>
-              </div>
-            </div>
-          </PopoverContent>
-        </Popover>
-      )}
-    </div>
-  );
-}
+          <DropdownMenuItem
+            onClick={handleClick}
+          >
+            <Folder className="text-muted-foreground" />
+            <span>打开笔记</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem>
+            <Forward className="text-muted-foreground" />
+            <span>创建副本</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => handleDelete(note)}
+          >
+            <Trash2 className="text-muted-foreground" />
+            <span>删除笔记</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </SidebarMenuItem>
+
+  )
+};

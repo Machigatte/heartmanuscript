@@ -1,7 +1,7 @@
 import React from "react";
 
 interface EditorActionsProps {
-  children: React.ReactNode; // 用于插入 Action 组件和内容
+  children: React.ReactNode;
 }
 
 export const EditorActions: React.FC<EditorActionsProps> = ({ children }) => {
